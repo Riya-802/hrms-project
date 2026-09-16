@@ -7,7 +7,6 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
   const navigate = useNavigate();
   const { departments, addToast } = useHRMS();
   const fileInputRef = useRef(null);
-  const [showUrlInput, setShowUrlInput] = useState(false);
 
   const [formData, setFormData] = useState({
     id: initialValues?.id || `EMP-${Math.floor(100 + Math.random() * 900)}`,
@@ -275,31 +274,11 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
                   >
                     <Upload size={16} /> Choose & Insert Real Image
                   </button>
-                  <button 
-                    type="button" 
-                    className="btn btn-secondary"
-                    style={{ padding: '0.55rem 0.85rem', fontSize: '0.85rem' }}
-                    onClick={() => setShowUrlInput(!showUrlInput)}
-                  >
-                    {showUrlInput ? 'Hide URL Input' : 'Paste Image URL Link'}
-                  </button>
                 </div>
                 
                 <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
                   Click "Choose & Insert Real Image" to upload any PNG, JPG, or WEBP photo directly from your device (Max 5MB).
                 </span>
-
-                {showUrlInput && (
-                  <input 
-                    type="text" 
-                    name="profilePhoto" 
-                    value={formData.profilePhoto} 
-                    onChange={handleChange}
-                    placeholder="Paste image URL (https://...)"
-                    className="form-control"
-                    style={{ marginTop: '0.35rem', fontSize: '0.85rem' }}
-                  />
-                )}
               </div>
             </div>
           </div>
