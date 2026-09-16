@@ -43,7 +43,7 @@ const EmployeeDetails = () => {
   const handleDelete = () => {
     openModal({
       title: 'Delete Employee',
-      message: `Are you sure you want to remove "${employee.fullName}" (${employee.id}) from HRMS?`,
+      message: `Are you sure you want to remove "${employee.fullName}" (${employee.employeeId || employee.employee_id || employee.id}) from HRMS?`,
       confirmText: 'Delete Employee',
       type: 'danger',
       onConfirm: () => {
@@ -110,7 +110,7 @@ const EmployeeDetails = () => {
                 <Briefcase size={14} /> Employee ID
               </span>
             </div>
-            <div className="info-value">{employee.id}</div>
+            <div className="info-value">{employee.employeeId || employee.employee_id || employee.id}</div>
           </div>
 
           <div className="info-item">

@@ -17,7 +17,7 @@ const EmployeeTable = ({ employees = [] }) => {
   const handleDeleteClick = (employee) => {
     openModal({
       title: 'Delete Employee',
-      message: `Are you sure you want to delete "${employee.fullName}" (${employee.id})? This action cannot be undone.`,
+      message: `Are you sure you want to delete "${employee.fullName}" (${employee.employeeId || employee.employee_id || employee.id})? This action cannot be undone.`,
       confirmText: 'Delete Employee',
       type: 'danger',
       onConfirm: () => {
@@ -47,7 +47,7 @@ const EmployeeTable = ({ employees = [] }) => {
             {currentEmployees.length > 0 ? (
               currentEmployees.map((emp) => (
                 <tr key={emp.id}>
-                  <td style={{ fontWeight: '600', color: 'var(--primary)' }}>{emp.id}</td>
+                  <td style={{ fontWeight: '600', color: 'var(--primary)' }}>{emp.employeeId || emp.employee_id || emp.id}</td>
                   <td>
                     <div className="table-user-cell">
                       <img 
