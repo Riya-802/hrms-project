@@ -46,6 +46,7 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
 
   const validate = () => {
     const newErrors = {};
+    if (!String(formData.id || '').trim()) newErrors.id = 'Employee ID is required.';
     if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required.';
     if (!formData.email.trim()) {
       newErrors.email = 'Email address is required.';
@@ -82,15 +83,16 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
         <div className="form-grid">
           {/* Employee ID */}
           <div className="form-group">
-            <label>Employee ID</label>
+            <label>Employee ID <span className="required">*</span></label>
             <input 
               type="text" 
               name="id" 
               value={formData.id} 
-              disabled 
-              className="form-control"
-              style={{ backgroundColor: '#f1f5f9', cursor: 'not-allowed' }}
+              onChange={handleChange}
+              placeholder="e.g. EMP-101"
+              className={`form-control ${errors.id ? 'error' : ''}`}
             />
+            {errors.id && <span className="error-msg">{errors.id}</span>}
           </div>
 
           {/* Full Name */}
