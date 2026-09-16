@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import {
+  loginApi,
+  fetchMeApi,
   fetchEmployees,
   createEmployeeApi,
   updateEmployeeApi,
@@ -117,16 +119,20 @@ export const HRMSProvider = ({ children }) => {
     status: 'Active'
   }), []);
 
+  const [token, setToken] = useState(() => {
+    return localStorage.getItem('hrms_token') || null;
+  });
+
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('hrms_user');
     if (saved) {
       try { return JSON.parse(saved); } catch (e) { }
     }
-    return DEFAULT_ADMIN;
+    return null;
   });
 
   const [userRole, setUserRole] = useState(() => {
-    return user?.role || 'admin';
+    return user?.role || null;
   });
 
   const [employees, setEmployees] = useState([]);
@@ -144,30 +150,27 @@ export const HRMSProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentLanguage, setCurrentLanguage] = useState('EN');
 
-  const login = (email, password, roleHint) => {
-    let targetUser = null;
-    const cleanEmail = email ? email.trim().toLowerCase() : '';
-    
-    if (roleHint === 'admin' || cleanEmail.includes('admin')) {
-      targetUser = DEFAULT_ADMIN;
-    } else {
-      const match = employees.find(e => e.email && e.email.toLowerCase() === cleanEmail);
-      if (match) {
-        targetUser = { ...match, role: 'employee' };
-      } else {
-        targetUser = DEFAULT_EMPLOYEE;
+  const login = async (credentials) => {
+    try {
+      const res = await loginApi(credentials);
+      if (res.success && res.token && res.user) {
+        setToken(res.token);
+        setUser(res.user);
+        setUserRole(res.user.role);
+        localStorage.setItem('hrms_token', res.token);
+        localStorage.setItem('hrms_user', JSON.stringify(res.user));
+        return res.user;
       }
+    } catch (error) {
+      throw error;
     }
-
-    setUser(targetUser);
-    setUserRole(targetUser.role);
-    localStorage.setItem('hrms_user', JSON.stringify(targetUser));
-    return targetUser;
   };
 
   const logout = () => {
+    setToken(null);
     setUser(null);
     setUserRole(null);
+    localStorage.removeItem('hrms_token');
     localStorage.removeItem('hrms_user');
   };
 
@@ -615,6 +618,7 @@ export const HRMSProvider = ({ children }) => {
         changeLanguage,
         t,
         currentFormattedDate,
+        token,
         user,
         userRole,
         login,

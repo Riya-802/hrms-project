@@ -3,16 +3,21 @@
 const API_BASE_URL = 'http://localhost:5000/api';
 
 /**
- * Universal fetch wrapper with error handling
+ * Universal fetch wrapper with automatic JWT Bearer header & error handling
  */
 const request = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
+  
+  const token = localStorage.getItem('hrms_token');
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+    ...options.headers,
+  };
+
   const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
     ...options,
+    headers,
   };
 
   try {
@@ -35,7 +40,26 @@ const request = async (endpoint, options = {}) => {
 };
 
 // ==========================================
-// 1. DASHBOARD API ENDPOINTS
+// 1. AUTHENTICATION API ENDPOINTS
+// ==========================================
+
+export const loginApi = async (credentials) => {
+  return request('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify(credentials),
+  });
+};
+
+export const fetchMeApi = async () => {
+  return request('/auth/me');
+};
+
+export const fetchEmployeeSelfDashboardApi = async () => {
+  return request('/employee/me/dashboard');
+};
+
+// ==========================================
+// 2. DASHBOARD API ENDPOINTS
 // ==========================================
 
 export const fetchDashboardStats = async () => {
@@ -51,7 +75,7 @@ export const fetchRecentEmployees = async () => {
 };
 
 // ==========================================
-// 2. DEPARTMENT API ENDPOINTS
+// 3. DEPARTMENT API ENDPOINTS
 // ==========================================
 
 export const fetchDepartments = async () => {
@@ -83,13 +107,13 @@ export const deleteDepartmentApi = async (id) => {
 };
 
 // ==========================================
-// 3. EMPLOYEE API ENDPOINTS
+// 4. EMPLOYEE API ENDPOINTS
 // ==========================================
 
 export const fetchEmployees = async (params = {}) => {
   const query = new URLSearchParams();
   if (params.page) query.append('page', params.page);
-  if (params.limit) query.append('limit', params.limit || 50);
+  if (params.limit) query.append('limit', params.limit || 100);
   if (params.search) query.append('search', params.search);
   if (params.department) query.append('department', params.department);
   if (params.status) query.append('status', params.status);

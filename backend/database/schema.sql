@@ -14,12 +14,14 @@ CREATE TABLE departments (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. EMPLOYEES TABLE
+-- 2. EMPLOYEES & USERS TABLE
 CREATE TABLE employees (
     id SERIAL PRIMARY KEY,
     employee_id VARCHAR(30) NOT NULL UNIQUE,
     full_name VARCHAR(150) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'employee' CHECK (role IN ('admin', 'employee')),
     phone VARCHAR(30),
     date_of_birth DATE,
     gender VARCHAR(20) CHECK (gender IN ('Male', 'Female', 'Other', 'Prefer not to say')),
@@ -35,8 +37,9 @@ CREATE TABLE employees (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Indexes for search & filtering optimization
+-- Indexes for search, auth & filtering optimization
 CREATE INDEX idx_employees_email ON employees(email);
 CREATE INDEX idx_employees_employee_id ON employees(employee_id);
+CREATE INDEX idx_employees_role ON employees(role);
 CREATE INDEX idx_employees_department_id ON employees(department_id);
 CREATE INDEX idx_employees_status ON employees(status);

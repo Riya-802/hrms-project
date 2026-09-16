@@ -58,6 +58,15 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
     if (!formData.department) newErrors.department = 'Department is required.';
     if (!formData.joiningDate) newErrors.joiningDate = 'Joining date is required.';
     if (!formData.salary) newErrors.salary = 'Salary is required.';
+    if (!isEdit && !formData.password) {
+      newErrors.password = 'Initial login password is required.';
+    }
+    if (formData.password && formData.password.length < 4) {
+      newErrors.password = 'Password must be at least 4 characters.';
+    }
+    if (formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match.';
+    }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -237,6 +246,34 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
+          </div>
+
+          {/* Account Password */}
+          <div className="form-group">
+            <label>Account Password {isEdit ? '(Leave blank to keep existing)' : '<span className="required">*</span>'}</label>
+            <input 
+              type="password" 
+              name="password" 
+              value={formData.password || ''} 
+              onChange={handleChange}
+              placeholder={isEdit ? '••••••••' : 'Initial login password'}
+              className={`form-control ${errors.password ? 'error' : ''}`}
+            />
+            {errors.password && <span className="error-msg">{errors.password}</span>}
+          </div>
+
+          {/* Confirm Password */}
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <input 
+              type="password" 
+              name="confirmPassword" 
+              value={formData.confirmPassword || ''} 
+              onChange={handleChange}
+              placeholder="Re-enter password"
+              className={`form-control ${errors.confirmPassword ? 'error' : ''}`}
+            />
+            {errors.confirmPassword && <span className="error-msg">{errors.confirmPassword}</span>}
           </div>
 
           {/* Employee Profile Photo Real Image Upload */}

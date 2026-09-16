@@ -2,9 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const { notFoundHandler, errorHandler } = require('./middleware/errorMiddleware');
 
+const authRoutes = require('./routes/authRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const departmentRoutes = require('./routes/departmentRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const employeeSelfRoutes = require('./routes/employeeSelfRoutes');
 
 const app = express();
 
@@ -30,9 +32,11 @@ app.get('/', (req, res) => {
 });
 
 // API Routes Mounting
+app.use('/api/auth', authRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/departments', departmentRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/employee', employeeSelfRoutes);
 
 // Error Handling Middleware
 app.use(notFoundHandler);

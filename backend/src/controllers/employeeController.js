@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const bcrypt = require('bcryptjs');
 
 /**
  * Helper to generate next unique Employee ID (e.g. EMP011)
@@ -182,6 +183,8 @@ const createEmployee = async (req, res, next) => {
       employee_id,
       full_name,
       email,
+      password,
+      role = 'employee',
       phone,
       date_of_birth,
       gender,
@@ -207,20 +210,26 @@ const createEmployee = async (req, res, next) => {
     // Generate or use provided employee_id
     const finalEmpId = employee_id ? employee_id.trim() : await generateNextEmployeeId();
 
+    // Hash Password with bcryptjs (default password 'emp123' if omitted)
+    const rawPassword = password && password.trim() ? password.trim() : 'emp123';
+    const password_hash = await bcrypt.hash(rawPassword, 10);
+
     const insertQuery = `
       INSERT INTO employees (
-        employee_id, full_name, email, phone, date_of_birth, gender,
+        employee_id, full_name, email, password_hash, role, phone, date_of_birth, gender,
         designation, department_id, joining_date, employment_type,
         salary, status, address, profile_photo
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
-      RETURNING *;
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+      RETURNING id, employee_id, full_name, email, role, phone, date_of_birth, gender, designation, department_id, joining_date, employment_type, salary, status, address, profile_photo, created_at, updated_at;
     `;
 
     const values = [
       finalEmpId,
       full_name.trim(),
       email.trim().toLowerCase(),
+      password_hash,
+      role,
       phone ? phone.trim() : null,
       date_of_birth || null,
       gender || null,
@@ -239,7 +248,7 @@ const createEmployee = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      message: 'Employee created successfully',
+      message: 'Employee created successfully with secure hashed credentials',
       data: {
         ...newEmp,
         department_name: deptCheck.rows[0].department_name

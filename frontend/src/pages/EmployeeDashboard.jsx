@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Clock, 
   Calendar, 
   CheckCircle2, 
   DollarSign, 
   FileText, 
-  AlertCircle, 
-  ChevronRight, 
   Sparkles, 
   Building2, 
   Mail, 
@@ -18,18 +16,37 @@ import {
   Square
 } from 'lucide-react';
 import { useHRMS, formatCurrency } from '../context/HRMSContext';
+import { fetchEmployeeSelfDashboardApi } from '../api/hrmsApi';
 
 const EmployeeDashboard = () => {
   const { user, tasks, toggleTaskStatus, announcements, addToast } = useHRMS();
+  const [dbData, setDbData] = useState(null);
   const [isCheckedIn, setIsCheckedIn] = useState(true);
   const [checkInTime, setCheckInTime] = useState('08:52 AM');
 
-  const empName = user?.fullName || 'Employee Member';
-  const empId = user?.employeeId || 'EMP002';
-  const empDept = user?.department || 'Engineering';
-  const empDesignation = user?.designation || 'Senior Software Engineer';
-  const empSalary = user?.salary ? formatCurrency(user.salary) : '$95,000 / yr';
-  const photo = user?.profilePhoto || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=256';
+  useEffect(() => {
+    const loadDbDashboard = async () => {
+      try {
+        const res = await fetchEmployeeSelfDashboardApi();
+        if (res.success && res.data) {
+          setDbData(res.data);
+        }
+      } catch (err) {
+        console.warn('Using context user state for dashboard:', err.message);
+      }
+    };
+    loadDbDashboard();
+  }, []);
+
+  const activeEmp = dbData || user || {};
+
+  const empName = activeEmp.fullName || activeEmp.full_name || 'Employee Member';
+  const empId = activeEmp.employeeId || activeEmp.employee_id || 'EMP001';
+  const empDept = activeEmp.department || activeEmp.department_name || 'Engineering';
+  const empDesignation = activeEmp.designation || 'Staff Engineer';
+  const rawSalary = activeEmp.salary ? activeEmp.salary : '95000';
+  const empSalary = formatCurrency(rawSalary);
+  const photo = activeEmp.profilePhoto || activeEmp.profile_photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256';
 
   const handleToggleCheckIn = () => {
     if (isCheckedIn) {
@@ -188,28 +205,28 @@ const EmployeeDashboard = () => {
                   <Mail size={15} color="#64748b" />
                   <div>
                     <div className="info-label">Email Address</div>
-                    <div className="info-val">{user?.email || 'employee@hrms.com'}</div>
+                    <div className="info-val">{activeEmp.email || 'employee@company.com'}</div>
                   </div>
                 </div>
                 <div className="info-item">
                   <Phone size={15} color="#64748b" />
                   <div>
                     <div className="info-label">Phone Number</div>
-                    <div className="info-val">{user?.phone || '+1 555-0199'}</div>
+                    <div className="info-val">{activeEmp.phone || '+91 98765 43210'}</div>
                   </div>
                 </div>
                 <div className="info-item">
                   <Calendar size={15} color="#64748b" />
                   <div>
                     <div className="info-label">Joining Date</div>
-                    <div className="info-val">{user?.joiningDate || '2022-06-10'}</div>
+                    <div className="info-val">{activeEmp.joiningDate ? String(activeEmp.joiningDate).split('T')[0] : '2022-03-15'}</div>
                   </div>
                 </div>
                 <div className="info-item">
                   <MapPin size={15} color="#64748b" />
                   <div>
                     <div className="info-label">Work Location</div>
-                    <div className="info-val">Main HQ Office • Floor 4</div>
+                    <div className="info-val">{activeEmp.address || 'Main HQ Office • Floor 4'}</div>
                   </div>
                 </div>
               </div>
@@ -240,7 +257,7 @@ const EmployeeDashboard = () => {
                     <div className="announcement-item">
                       <div className="announcement-date">Today • 10:00 AM</div>
                       <h4 className="announcement-title">Annual Townhall & Q3 Performance Review</h4>
-                      <p className="announcement-desc">All team members are invited to join the main conference room for our executive updates.</p>
+                      <p className="announcement-desc">All team members are invited to join the main conference room for executive updates.</p>
                     </div>
                     <div className="announcement-item">
                       <div className="announcement-date">Yesterday</div>

@@ -1,47 +1,70 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, UserCheck, Lock, Mail, ArrowRight, Sparkles } from 'lucide-react';
+import { ShieldCheck, UserCheck, Lock, Mail, User, ArrowRight, Sparkles } from 'lucide-react';
 import { useHRMS } from '../context/HRMSContext';
 
 const Login = () => {
   const { login, addToast } = useHRMS();
   const navigate = useNavigate();
 
+  const [employeeId, setEmployeeId] = useState('ADM001');
   const [email, setEmail] = useState('admin@hrms.com');
-  const [password, setPassword] = useState('password123');
+  const [password, setPassword] = useState('admin123');
   const [role, setRole] = useState('admin'); // 'admin' | 'employee'
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleRoleToggle = (targetRole) => {
+    setRole(targetRole);
+    setErrorMessage('');
+    if (targetRole === 'admin') {
+      setEmployeeId('ADM001');
+      setEmail('admin@hrms.com');
+      setPassword('admin123');
+    } else {
+      setEmployeeId('EMP001');
+      setEmail('aarav.sharma@company.com');
+      setPassword('emp123');
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email) {
-      addToast('Please enter your email address.', 'danger');
+    setErrorMessage('');
+
+    if (!employeeId && !email) {
+      setErrorMessage('Please enter your Employee Unique ID or Email.');
+      return;
+    }
+    if (!password) {
+      setErrorMessage('Please enter your password.');
       return;
     }
 
-    const loggedUser = login(email, password, role);
-    if (loggedUser) {
-      if (loggedUser.role === 'admin') {
-        navigate('/admin/dashboard');
-      } else {
-        navigate('/employee/dashboard');
+    setIsSubmitting(true);
+    try {
+      const loggedUser = await login({
+        employee_id: employeeId.trim(),
+        email: email.trim(),
+        password: password,
+        role: role
+      });
+
+      if (loggedUser) {
+        if (loggedUser.role === 'admin') {
+          addToast('Authenticated as Admin successfully.', 'success');
+          navigate('/admin/dashboard');
+        } else {
+          addToast(`Authenticated as ${loggedUser.fullName || loggedUser.full_name} successfully.`, 'success');
+          navigate('/employee/dashboard');
+        }
       }
+    } catch (error) {
+      setErrorMessage(error.message || 'Invalid Employee ID, Email or Password.');
+      addToast(error.message || 'Authentication rejected.', 'danger');
+    } finally {
+      setIsSubmitting(false);
     }
-  };
-
-  const handleDemoAdmin = () => {
-    setEmail('admin@hrms.com');
-    setPassword('admin123');
-    setRole('admin');
-    const loggedUser = login('admin@hrms.com', 'admin123', 'admin');
-    navigate('/admin/dashboard');
-  };
-
-  const handleDemoEmployee = () => {
-    setEmail('employee@hrms.com');
-    setPassword('emp123');
-    setRole('employee');
-    const loggedUser = login('employee@hrms.com', 'emp123', 'employee');
-    navigate('/employee/dashboard');
   };
 
   return (
@@ -50,7 +73,7 @@ const Login = () => {
         {/* Header */}
         <div className="login-header">
           <div className="login-logo-badge">
-            <ShieldCheck size={32} color="#2563eb" />
+            {role === 'admin' ? <ShieldCheck size={32} color="#2563eb" /> : <UserCheck size={32} color="#10b981" />}
           </div>
           <h1 className="login-title">HRMS Portal</h1>
           <p className="login-subtitle">Human Resource Management System</p>
@@ -61,10 +84,7 @@ const Login = () => {
           <button 
             type="button" 
             className={`role-toggle-btn ${role === 'admin' ? 'active-admin' : ''}`}
-            onClick={() => {
-              setRole('admin');
-              setEmail('admin@hrms.com');
-            }}
+            onClick={() => handleRoleToggle('admin')}
           >
             <ShieldCheck size={18} />
             <span>Admin Portal</span>
@@ -73,18 +93,39 @@ const Login = () => {
           <button 
             type="button" 
             className={`role-toggle-btn ${role === 'employee' ? 'active-employee' : ''}`}
-            onClick={() => {
-              setRole('employee');
-              setEmail('employee@hrms.com');
-            }}
+            onClick={() => handleRoleToggle('employee')}
           >
             <UserCheck size={18} />
             <span>Employee Self-Service</span>
           </button>
         </div>
 
+        {/* Error Alert Message */}
+        {errorMessage && (
+          <div style={{ padding: '0.75rem 1rem', backgroundColor: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', color: '#dc2626', fontSize: '0.825rem', fontWeight: 600, marginBottom: '1.25rem', textAlign: 'center' }}>
+            {errorMessage}
+          </div>
+        )}
+
         {/* Form */}
         <form onSubmit={handleSubmit} className="login-form">
+          {/* Unique Employee ID */}
+          <div className="form-group">
+            <label className="form-label">{role === 'admin' ? 'Admin Unique ID' : 'Employee ID / Unique ID'}</label>
+            <div className="input-with-icon">
+              <User className="field-icon" size={18} />
+              <input 
+                type="text" 
+                className="form-control login-input"
+                placeholder={role === 'admin' ? 'e.g. ADM001' : 'e.g. EMP001'}
+                value={employeeId}
+                onChange={(e) => setEmployeeId(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Email Address */}
           <div className="form-group">
             <label className="form-label">Email Address</label>
             <div className="input-with-icon">
@@ -100,6 +141,7 @@ const Login = () => {
             </div>
           </div>
 
+          {/* Password */}
           <div className="form-group">
             <label className="form-label">Password</label>
             <div className="input-with-icon">
@@ -115,33 +157,16 @@ const Login = () => {
             </div>
           </div>
 
-          <button type="submit" className="login-submit-btn">
-            <span>Sign In to {role === 'admin' ? 'Admin Portal' : 'Employee Workspace'}</span>
+          <button type="submit" className="login-submit-btn" disabled={isSubmitting}>
+            <span>{isSubmitting ? 'Authenticating...' : `Sign In to ${role === 'admin' ? 'Admin Portal' : 'Employee Workspace'}`}</span>
             <ArrowRight size={18} />
           </button>
         </form>
 
-        {/* Quick Demo Shortcuts */}
-        <div className="login-demo-section">
-          <div className="demo-divider">
-            <span>OR QUICK LOGIN FOR DEMO</span>
-          </div>
-          <div className="demo-buttons">
-            <button type="button" className="btn btn-outline btn-demo-admin" onClick={handleDemoAdmin}>
-              <ShieldCheck size={16} />
-              <span>Login as Admin</span>
-            </button>
-            <button type="button" className="btn btn-outline btn-demo-employee" onClick={handleDemoEmployee}>
-              <UserCheck size={16} />
-              <span>Login as Employee</span>
-            </button>
-          </div>
-        </div>
-
         {/* Footer */}
         <div className="login-footer">
           <Sparkles size={14} color="#3b82f6" />
-          <span>v2.4 Enterprise Edition • Protected & Secure</span>
+          <span>v2.4 PostgreSQL Enterprise Edition • Protected & Secure</span>
         </div>
       </div>
     </div>
