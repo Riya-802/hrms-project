@@ -240,7 +240,7 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
           {/* Employee Profile Photo Real Image Upload */}
           <div className="form-group full-width" style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
             <label style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', marginBottom: '0.4rem', display: 'block' }}>
-              Employee Profile Photo <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: '500' }}>(Upload real photo or pick file)</span>
+              Employee Profile Photo
             </label>
             
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap', padding: '1.15rem 1.35rem', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
@@ -272,12 +272,12 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
                     style={{ padding: '0.55rem 1.1rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
                     onClick={() => fileInputRef.current?.click()}
                   >
-                    <Upload size={16} /> Choose & Insert Real Image
+                    <Upload size={16} /> Upload Image
                   </button>
                 </div>
                 
                 <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                  Click "Choose & Insert Real Image" to upload any PNG, JPG, or WEBP photo directly from your device (Max 5MB).
+                  Click "Upload Image" to select any PNG, JPG, or WEBP photo directly from your device (Max 5MB).
                 </span>
               </div>
             </div>
