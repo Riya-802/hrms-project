@@ -219,7 +219,25 @@ export const HRMSProvider = ({ children }) => {
       }
 
       if (empRes.success && empRes.data) {
-        setEmployees(empRes.data.map(normalizeEmployee));
+        const normalizedList = empRes.data.map(normalizeEmployee);
+        setEmployees(normalizedList);
+
+        const currentUserInStorage = localStorage.getItem('hrms_user');
+        if (currentUserInStorage) {
+          try {
+            const parsed = JSON.parse(currentUserInStorage);
+            const match = normalizedList.find(e => 
+              String(e.id) === String(parsed.id) || 
+              (e.employeeId && e.employeeId === parsed.employeeId) || 
+              (e.email && parsed.email && e.email.toLowerCase() === parsed.email.toLowerCase())
+            );
+            if (match) {
+              const updatedUser = { ...parsed, ...match };
+              setUser(updatedUser);
+              localStorage.setItem('hrms_user', JSON.stringify(updatedUser));
+            }
+          } catch (e) {}
+        }
       }
 
       setIsBackendConnected(true);
@@ -478,7 +496,17 @@ export const HRMSProvider = ({ children }) => {
       const res = await updateEmployeeApi(id, payload);
       if (res.success && res.data) {
         const normalized = normalizeEmployee(res.data);
-        setEmployees((prev) => prev.map((emp) => (emp.id === id ? normalized : emp)));
+        setEmployees((prev) => prev.map((emp) => (emp.id === id || emp.employeeId === id ? normalized : emp)));
+        
+        setUser((prevUser) => {
+          if (prevUser && (String(prevUser.id) === String(normalized.id) || prevUser.employeeId === normalized.employeeId || (prevUser.email && normalized.email && prevUser.email.toLowerCase() === normalized.email.toLowerCase()))) {
+            const updated = { ...prevUser, ...normalized };
+            localStorage.setItem('hrms_user', JSON.stringify(updated));
+            return updated;
+          }
+          return prevUser;
+        });
+
         addToast(`Employee "${normalized.fullName}" updated in PostgreSQL!`, 'success');
         refreshData();
         return;
