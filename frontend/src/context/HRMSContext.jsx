@@ -297,6 +297,14 @@ export const HRMSProvider = ({ children }) => {
     refreshData();
   }, []);
 
+  useEffect(() => {
+    if (dashboardTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [dashboardTheme]);
+
   const toggleDashboardTheme = () => {
     const next = dashboardTheme === 'light' ? 'dark' : 'light';
     setDashboardTheme(next);
