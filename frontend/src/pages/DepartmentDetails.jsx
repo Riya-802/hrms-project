@@ -15,12 +15,15 @@ const DepartmentDetails = () => {
 
   if (!department) {
     return (
-      <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
-        <h3>Department Not Found</h3>
-        <p style={{ color: 'var(--text-muted)', margin: '1rem 0' }}>
+      <div className="bg-white rounded-xl border border-slate-200 p-12 text-center shadow-sm max-w-md mx-auto my-8">
+        <h3 className="text-lg font-bold text-slate-900">Department Not Found</h3>
+        <p className="text-sm text-slate-500 my-4">
           No department records found for ID "{id}".
         </p>
-        <button className="btn btn-primary" onClick={() => navigate('/admin/departments')}>
+        <button 
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors shadow-sm" 
+          onClick={() => navigate('/admin/departments')}
+        >
           Back to Departments
         </button>
       </div>
