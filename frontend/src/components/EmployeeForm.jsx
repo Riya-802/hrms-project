@@ -87,81 +87,102 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
   };
 
   return (
-    <div className="form-card">
+    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <form onSubmit={handleSubmit}>
-        <div className="form-grid">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {/* Employee ID */}
-          <div className="form-group">
-            <label>Employee ID <span className="required">*</span></label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Employee ID <span className="text-red-500 ml-0.5">*</span></label>
             <input 
               type="text" 
               name="id" 
               value={formData.id} 
               onChange={handleChange}
               placeholder="e.g. EMP-101"
-              className={`form-control ${errors.id ? 'error' : ''}`}
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                errors.id 
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                  : 'border-slate-300 focus:border-blue-600 focus:ring-blue-600/20'
+              }`}
             />
-            {errors.id && <span className="error-msg">{errors.id}</span>}
+            {errors.id && <span className="text-xs font-medium text-red-600 mt-0.5">{errors.id}</span>}
           </div>
 
           {/* Full Name */}
-          <div className="form-group">
-            <label>Full Name <span className="required">*</span></label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Full Name <span className="text-red-500 ml-0.5">*</span></label>
             <input 
               type="text" 
               name="fullName" 
               value={formData.fullName} 
               onChange={handleChange}
               placeholder="e.g. Eleanor Vance"
-              className={`form-control ${errors.fullName ? 'error' : ''}`}
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                errors.fullName 
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                  : 'border-slate-300 focus:border-blue-600 focus:ring-blue-600/20'
+              }`}
             />
-            {errors.fullName && <span className="error-msg">{errors.fullName}</span>}
+            {errors.fullName && <span className="text-xs font-medium text-red-600 mt-0.5">{errors.fullName}</span>}
           </div>
 
           {/* Email */}
-          <div className="form-group">
-            <label>Email Address <span className="required">*</span></label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Email Address <span className="text-red-500 ml-0.5">*</span></label>
             <input 
               type="email" 
               name="email" 
               value={formData.email} 
               onChange={handleChange}
               placeholder="e.g. eleanor.vance@hrms-corp.com"
-              className={`form-control ${errors.email ? 'error' : ''}`}
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                errors.email 
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                  : 'border-slate-300 focus:border-blue-600 focus:ring-blue-600/20'
+              }`}
             />
-            {errors.email && <span className="error-msg">{errors.email}</span>}
+            {errors.email && <span className="text-xs font-medium text-red-600 mt-0.5">{errors.email}</span>}
           </div>
 
           {/* Phone */}
-          <div className="form-group">
-            <label>Phone Number <span className="required">*</span></label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Phone Number <span className="text-red-500 ml-0.5">*</span></label>
             <input 
               type="text" 
               name="phone" 
               value={formData.phone} 
               onChange={handleChange}
               placeholder="e.g. +1 (555) 234-5678"
-              className={`form-control ${errors.phone ? 'error' : ''}`}
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                errors.phone 
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                  : 'border-slate-300 focus:border-blue-600 focus:ring-blue-600/20'
+              }`}
             />
-            {errors.phone && <span className="error-msg">{errors.phone}</span>}
+            {errors.phone && <span className="text-xs font-medium text-red-600 mt-0.5">{errors.phone}</span>}
           </div>
 
           {/* Date of Birth */}
-          <div className="form-group">
-            <label>Date of Birth</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Date of Birth</label>
             <input 
               type="date" 
               name="dob" 
               value={formData.dob} 
               onChange={handleChange}
-              className="form-control"
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20"
             />
           </div>
 
           {/* Gender */}
-          <div className="form-group">
-            <label>Gender</label>
-            <select name="gender" value={formData.gender} onChange={handleChange} className="form-control">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Gender</label>
+            <select 
+              name="gender" 
+              value={formData.gender} 
+              onChange={handleChange} 
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 bg-white"
+            >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
@@ -170,27 +191,35 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
           </div>
 
           {/* Designation */}
-          <div className="form-group">
-            <label>Designation / Job Title <span className="required">*</span></label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Designation / Job Title <span className="text-red-500 ml-0.5">*</span></label>
             <input 
               type="text" 
               name="designation" 
               value={formData.designation} 
               onChange={handleChange}
               placeholder="e.g. Senior HR Specialist"
-              className={`form-control ${errors.designation ? 'error' : ''}`}
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                errors.designation 
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                  : 'border-slate-300 focus:border-blue-600 focus:ring-blue-600/20'
+              }`}
             />
-            {errors.designation && <span className="error-msg">{errors.designation}</span>}
+            {errors.designation && <span className="text-xs font-medium text-red-600 mt-0.5">{errors.designation}</span>}
           </div>
 
           {/* Department */}
-          <div className="form-group">
-            <label>Department <span className="required">*</span></label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Department <span className="text-red-500 ml-0.5">*</span></label>
             <select 
               name="department" 
               value={formData.department} 
               onChange={handleChange} 
-              className={`form-control ${errors.department ? 'error' : ''}`}
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 bg-white ${
+                errors.department 
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                  : 'border-slate-300 focus:border-blue-600 focus:ring-blue-600/20'
+              }`}
             >
               {departments.map((dept) => (
                 <option key={dept.id} value={dept.name}>
@@ -198,26 +227,35 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
                 </option>
               ))}
             </select>
-            {errors.department && <span className="error-msg">{errors.department}</span>}
+            {errors.department && <span className="text-xs font-medium text-red-600 mt-0.5">{errors.department}</span>}
           </div>
 
           {/* Joining Date */}
-          <div className="form-group">
-            <label>Joining Date <span className="required">*</span></label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Joining Date <span className="text-red-500 ml-0.5">*</span></label>
             <input 
               type="date" 
               name="joiningDate" 
               value={formData.joiningDate} 
               onChange={handleChange}
-              className={`form-control ${errors.joiningDate ? 'error' : ''}`}
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                errors.joiningDate 
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                  : 'border-slate-300 focus:border-blue-600 focus:ring-blue-600/20'
+              }`}
             />
-            {errors.joiningDate && <span className="error-msg">{errors.joiningDate}</span>}
+            {errors.joiningDate && <span className="text-xs font-medium text-red-600 mt-0.5">{errors.joiningDate}</span>}
           </div>
 
           {/* Employment Type */}
-          <div className="form-group">
-            <label>Employment Type</label>
-            <select name="employmentType" value={formData.employmentType} onChange={handleChange} className="form-control">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Employment Type</label>
+            <select 
+              name="employmentType" 
+              value={formData.employmentType} 
+              onChange={handleChange} 
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 bg-white"
+            >
               <option value="Full-time">Full-time</option>
               <option value="Part-time">Part-time</option>
               <option value="Contract">Contract</option>
@@ -226,69 +264,88 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
           </div>
 
           {/* Salary */}
-          <div className="form-group">
-            <label>Salary (Annual / Monthly) <span className="required">*</span></label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Salary (Annual / Monthly) <span className="text-red-500 ml-0.5">*</span></label>
             <input 
               type="text" 
               name="salary" 
               value={formData.salary} 
               onChange={handleChange}
               placeholder="e.g. $85,000"
-              className={`form-control ${errors.salary ? 'error' : ''}`}
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                errors.salary 
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                  : 'border-slate-300 focus:border-blue-600 focus:ring-blue-600/20'
+              }`}
             />
-            {errors.salary && <span className="error-msg">{errors.salary}</span>}
+            {errors.salary && <span className="text-xs font-medium text-red-600 mt-0.5">{errors.salary}</span>}
           </div>
 
           {/* Status */}
-          <div className="form-group">
-            <label>Status</label>
-            <select name="status" value={formData.status} onChange={handleChange} className="form-control">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Status</label>
+            <select 
+              name="status" 
+              value={formData.status} 
+              onChange={handleChange} 
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 bg-white"
+            >
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
           </div>
 
           {/* Account Password */}
-          <div className="form-group">
-            <label>Account Password {isEdit ? '(Leave blank to keep existing)' : '<span className="required">*</span>'}</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">
+              Account Password {isEdit ? '(Leave blank to keep existing)' : <span className="text-red-500 ml-0.5">*</span>}
+            </label>
             <input 
               type="password" 
               name="password" 
               value={formData.password || ''} 
               onChange={handleChange}
               placeholder={isEdit ? '••••••••' : 'Initial login password'}
-              className={`form-control ${errors.password ? 'error' : ''}`}
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                errors.password 
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                  : 'border-slate-300 focus:border-blue-600 focus:ring-blue-600/20'
+              }`}
             />
-            {errors.password && <span className="error-msg">{errors.password}</span>}
+            {errors.password && <span className="text-xs font-medium text-red-600 mt-0.5">{errors.password}</span>}
           </div>
 
           {/* Confirm Password */}
-          <div className="form-group">
-            <label>Confirm Password</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Confirm Password</label>
             <input 
               type="password" 
               name="confirmPassword" 
               value={formData.confirmPassword || ''} 
               onChange={handleChange}
               placeholder="Re-enter password"
-              className={`form-control ${errors.confirmPassword ? 'error' : ''}`}
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                errors.confirmPassword 
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                  : 'border-slate-300 focus:border-blue-600 focus:ring-blue-600/20'
+              }`}
             />
-            {errors.confirmPassword && <span className="error-msg">{errors.confirmPassword}</span>}
+            {errors.confirmPassword && <span className="text-xs font-medium text-red-600 mt-0.5">{errors.confirmPassword}</span>}
           </div>
 
           {/* Employee Profile Photo Real Image Upload */}
-          <div className="form-group full-width" style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-            <label style={{ fontWeight: '700', fontSize: '0.88rem', color: 'var(--text-main)', marginBottom: '0.4rem', display: 'block' }}>
+          <div className="col-span-full my-2">
+            <label className="mb-2 block text-sm font-semibold text-slate-900">
               Employee Profile Photo
             </label>
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap', padding: '1.15rem 1.35rem', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+            <div className="flex flex-wrap items-center gap-6 rounded-lg border border-slate-200 bg-slate-50 p-4">
               {/* Image Preview Avatar */}
-              <div style={{ position: 'relative', width: '76px', height: '76px', flexShrink: 0 }}>
+              <div className="relative h-19 w-19 shrink-0">
                 <img 
                   src={formData.profilePhoto || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=256'} 
                   alt="Profile Preview"
-                  style={{ width: '76px', height: '76px', borderRadius: '50%', objectFit: 'cover', border: '3px solid #ffffff', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}
+                  className="h-19 w-19 rounded-full border-4 border-white object-cover shadow-md"
                   onError={(e) => {
                     e.target.src = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=256';
                   }}
@@ -296,26 +353,25 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
               </div>
 
               {/* Upload Controls */}
-              <div style={{ flex: 1, minWidth: '220px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <div className="flex min-w-[220px] flex-1 flex-col gap-2">
+                <div className="flex flex-wrap items-center gap-3">
                   <input 
                     type="file" 
                     ref={fileInputRef} 
                     accept="image/*" 
                     onChange={handleFileChange}
-                    style={{ display: 'none' }}
+                    className="hidden"
                   />
                   <button 
                     type="button" 
-                    className="btn btn-primary"
-                    style={{ padding: '0.55rem 1.1rem', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+                    className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-xs font-medium text-white shadow-xs hover:bg-blue-700 transition cursor-pointer"
                     onClick={() => fileInputRef.current?.click()}
                   >
                     <Upload size={16} /> Upload Image
                   </button>
                 </div>
                 
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                <span className="text-xs text-slate-500">
                   Click "Upload Image" to select any PNG, JPG, or WEBP photo directly from your device (Max 5MB).
                 </span>
               </div>
@@ -323,28 +379,31 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
           </div>
 
           {/* Address */}
-          <div className="form-group full-width">
-            <label>Full Address</label>
+          <div className="col-span-full flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Full Address</label>
             <textarea 
               name="address" 
               rows="3" 
               value={formData.address} 
               onChange={handleChange}
               placeholder="Enter employee residential address..."
-              className="form-control"
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20"
             />
           </div>
         </div>
 
-        <div className="form-actions">
+        <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-200 pt-6">
           <button 
             type="button" 
-            className="btn btn-secondary" 
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition cursor-pointer" 
             onClick={() => navigate('/admin/employees')}
           >
             Cancel
           </button>
-          <button type="submit" className="btn btn-primary">
+          <button 
+            type="submit" 
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition cursor-pointer"
+          >
             {isEdit ? 'Update Employee' : 'Save Employee'}
           </button>
         </div>

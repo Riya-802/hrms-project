@@ -93,19 +93,25 @@ const PayrollWallet = () => {
   });
 
   return (
-    <div className="payroll-wallet-container">
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
       {/* Page Header */}
-      <div className="page-header" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="page-title">{isAdmin ? 'Enterprise Payroll Wallet' : 'My Payroll Wallet'}</h1>
-          <p className="page-subtitle">Manage digital salary payouts, bonus allocations, and instant expense reimbursements</p>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{isAdmin ? 'Enterprise Payroll Wallet' : 'My Payroll Wallet'}</h1>
+          <p className="text-sm text-slate-500 mt-1">Manage digital salary payouts, bonus allocations, and instant expense reimbursements</p>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <button className="btn btn-secondary" onClick={handleReimbursement} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div className="flex items-center gap-3">
+          <button 
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 text-sm font-medium transition-colors shadow-sm" 
+            onClick={handleReimbursement}
+          >
             <Plus size={16} />
             <span>Claim Expense</span>
           </button>
-          <button className="btn btn-primary" onClick={handleWithdraw} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <button 
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors shadow-sm" 
+            onClick={handleWithdraw}
+          >
             <ArrowUpRight size={16} />
             <span>Bank Transfer</span>
           </button>
@@ -113,38 +119,38 @@ const PayrollWallet = () => {
       </div>
 
       {/* Wallet Balance Hero Card */}
-      <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%)', color: '#ffffff', borderRadius: '16px', padding: '2rem', marginBottom: '1.5rem', boxShadow: '0 10px 25px -5px rgba(37, 99, 235, 0.3)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.5rem' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#93c5fd', fontSize: '0.875rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+      <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-blue-600 text-white rounded-2xl p-8 shadow-xl shadow-blue-500/10 border border-slate-800">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-blue-300 text-xs font-bold uppercase tracking-wider">
               <Wallet size={18} />
               <span>Available Digital Balance</span>
             </div>
-            <div style={{ fontSize: '2.5rem', fontWeight: '800', marginTop: '0.4rem', letterSpacing: '-0.5px' }}>
+            <div className="text-4xl font-extrabold tracking-tight">
               $12,866.00
             </div>
-            <div style={{ fontSize: '0.85rem', color: '#cbd5e1', marginTop: '0.2rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <ShieldCheck size={16} color="#34d399" />
+            <div className="flex items-center gap-2 text-xs text-slate-300 pt-1">
+              <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
               <span>Verified Account • Auto-linked to Corporate Payroll Pool</span>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1rem 1.25rem', borderRadius: '12px', backdropFilter: 'blur(8px)', border: '1px solid rgba(255, 255, 255, 0.15)' }}>
-              <div style={{ fontSize: '0.75rem', color: '#93c5fd', textTransform: 'uppercase', fontWeight: '600' }}>Next Salary Date</div>
-              <div style={{ fontSize: '1.1rem', fontWeight: '700', marginTop: '0.25rem' }}>Oct 01, 2026</div>
+          <div className="flex flex-wrap gap-4">
+            <div className="bg-white/10 backdrop-blur-md px-5 py-3.5 rounded-xl border border-white/15 min-w-[160px]">
+              <div className="text-xs font-semibold text-blue-300 uppercase tracking-wider">Next Salary Date</div>
+              <div className="text-base font-bold text-white mt-1">Oct 01, 2026</div>
             </div>
 
-            <div style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '1rem 1.25rem', borderRadius: '12px', backdropFilter: 'blur(8px)', border: '1px solid rgba(255, 255, 255, 0.15)' }}>
-              <div style={{ fontSize: '0.75rem', color: '#93c5fd', textTransform: 'uppercase', fontWeight: '600' }}>Pending Claims</div>
-              <div style={{ fontSize: '1.1rem', fontWeight: '700', marginTop: '0.25rem' }}>$450.00</div>
+            <div className="bg-white/10 backdrop-blur-md px-5 py-3.5 rounded-xl border border-white/15 min-w-[160px]">
+              <div className="text-xs font-semibold text-blue-300 uppercase tracking-wider">Pending Claims</div>
+              <div className="text-base font-bold text-white mt-1">$450.00</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* KPI Stats Grid */}
-      <div className="stats-grid" style={{ marginBottom: '1.5rem' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard title="Total Disbursed" value="$125,000" icon={DollarSign} color="success" />
         <StatCard title="Total Bonuses" value="$14,500" icon={TrendingUp} color="primary" />
         <StatCard title="Tax Deductions" value="$12,400" icon={FileText} color="warning" />
@@ -152,28 +158,28 @@ const PayrollWallet = () => {
       </div>
 
       {/* Transactions History */}
-      <div className="card" style={{ padding: '1.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: '600', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Clock size={20} color="#0ea5e9" />
+      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <Clock size={20} className="text-sky-500 shrink-0" />
             <span>Recent Wallet Transactions</span>
           </h3>
 
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-lg">
             <button 
-              className={`btn btn-sm ${activeTab === 'all' ? 'btn-primary' : 'btn-secondary'}`}
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors ${activeTab === 'all' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
               onClick={() => setActiveTab('all')}
             >
               All Activity
             </button>
             <button 
-              className={`btn btn-sm ${activeTab === 'credits' ? 'btn-primary' : 'btn-secondary'}`}
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors ${activeTab === 'credits' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
               onClick={() => setActiveTab('credits')}
             >
               Credits (+)
             </button>
             <button 
-              className={`btn btn-sm ${activeTab === 'debits' ? 'btn-primary' : 'btn-secondary'}`}
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-colors ${activeTab === 'debits' ? 'bg-white text-rose-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
               onClick={() => setActiveTab('debits')}
             >
               Deductions (-)
@@ -181,47 +187,47 @@ const PayrollWallet = () => {
           </div>
         </div>
 
-        <div className="table-responsive">
-          <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <div className="overflow-x-auto rounded-lg border border-slate-200">
+          <table className="w-full text-left border-collapse">
             <thead>
-              <tr style={{ background: '#f8fafc', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>
-                <th style={{ padding: '0.75rem 1rem', textAlign: 'left' }}>Transaction ID</th>
-                <th style={{ padding: '0.75rem 1rem', textAlign: 'left' }}>Date</th>
-                <th style={{ padding: '0.75rem 1rem', textAlign: 'left' }}>Description</th>
-                <th style={{ padding: '0.75rem 1rem', textAlign: 'left' }}>Category</th>
-                <th style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>Amount</th>
-                <th style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>Status</th>
+              <tr className="bg-slate-50 border-b border-slate-200">
+                <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Transaction ID</th>
+                <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Date</th>
+                <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Description</th>
+                <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Category</th>
+                <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Amount</th>
+                <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Status</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-100">
               {filteredTransactions.map(t => (
-                <tr key={t.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                  <td style={{ padding: '0.85rem 1rem', fontWeight: '600', color: '#0ea5e9', fontSize: '0.85rem' }}>
+                <tr key={t.id} className="hover:bg-slate-50/50 transition-colors">
+                  <td className="px-6 py-4 text-xs font-bold text-sky-600 whitespace-nowrap">
                     {t.id}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', color: '#475569', fontSize: '0.875rem' }}>
+                  <td className="px-6 py-4 text-sm text-slate-600 whitespace-nowrap">
                     {t.date}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', fontWeight: '600', color: '#0f172a' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <td className="px-6 py-4 text-sm font-semibold text-slate-900 whitespace-nowrap">
+                    <div className="flex items-center gap-2">
                       {t.type === 'credit' ? (
-                        <ArrowDownLeft size={16} color="#10b981" />
+                        <ArrowDownLeft size={16} className="text-emerald-500 shrink-0" />
                       ) : (
-                        <ArrowUpRight size={16} color="#ef4444" />
+                        <ArrowUpRight size={16} className="text-rose-500 shrink-0" />
                       )}
                       <span>{t.description}</span>
                     </div>
                   </td>
-                  <td style={{ padding: '0.85rem 1rem' }}>
-                    <span className="status-badge status-secondary" style={{ fontSize: '0.75rem' }}>
+                  <td className="px-6 py-4 text-sm whitespace-nowrap">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700">
                       {t.category}
                     </span>
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', textAlign: 'right', fontWeight: '700', color: t.type === 'credit' ? '#10b981' : '#ef4444' }}>
+                  <td className={`px-6 py-4 text-sm font-bold text-right whitespace-nowrap ${t.type === 'credit' ? 'text-emerald-600' : 'text-rose-600'}`}>
                     {t.type === 'credit' ? '+' : '-'}${t.amount.toLocaleString()}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', textAlign: 'center' }}>
-                    <span className="status-badge status-active" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                  <td className="px-6 py-4 text-sm text-center whitespace-nowrap">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
                       <CheckCircle2 size={12} />
                       <span>{t.status}</span>
                     </span>

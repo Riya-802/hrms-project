@@ -74,30 +74,43 @@ const EmployeeDashboard = () => {
   ];
 
   return (
-    <div className="employee-dashboard-container">
+    <div className="space-y-6">
       {/* Top Banner Card */}
-      <div className="emp-hero-card">
-        <div className="emp-hero-content">
-          <img src={photo} alt={empName} className="emp-hero-avatar" />
-          <div className="emp-hero-details">
-            <div className="emp-hero-badge">EMPLOYEE WORKSPACE</div>
-            <h2>Welcome back, {empName}!</h2>
-            <div className="emp-hero-meta">
-              <span><Briefcase size={15} /> {empDesignation}</span>
-              <span><Building2 size={15} /> {empDept}</span>
-              <span><Sparkles size={15} /> ID: {empId}</span>
+      <div className="rounded-2xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6 border border-slate-800">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+          <img 
+            src={photo} 
+            alt={empName} 
+            className="h-20 w-20 rounded-full border-4 border-white/20 object-cover shadow-lg" 
+            onError={(e) => {
+              e.target.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256';
+            }}
+          />
+          <div className="space-y-1.5">
+            <span className="inline-block rounded-full bg-white/10 px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-blue-200">
+              EMPLOYEE WORKSPACE
+            </span>
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl text-white">Welcome back, {empName}!</h2>
+            <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-slate-300 pt-1">
+              <span className="flex items-center gap-1.5"><Briefcase size={15} className="text-blue-400" /> {empDesignation}</span>
+              <span className="flex items-center gap-1.5"><Building2 size={15} className="text-blue-400" /> {empDept}</span>
+              <span className="flex items-center gap-1.5"><Sparkles size={15} className="text-blue-400" /> ID: {empId}</span>
             </div>
           </div>
         </div>
 
         {/* Clock In/Out Action */}
-        <div className="emp-clock-action">
-          <div className="clock-status-pill">
-            <span className={`status-indicator-dot ${isCheckedIn ? 'active' : 'inactive'}`} />
+        <div className="flex flex-col items-start sm:items-end gap-3 pt-4 md:pt-0 border-t border-slate-800 md:border-t-0">
+          <div className="inline-flex items-center gap-2 rounded-full bg-slate-800/80 px-3.5 py-1.5 text-xs font-semibold text-slate-200 border border-slate-700">
+            <span className={`h-2 w-2 rounded-full ${isCheckedIn ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
             <span>{isCheckedIn ? `Checked In (${checkInTime})` : 'Checked Out'}</span>
           </div>
           <button 
-            className={`btn ${isCheckedIn ? 'btn-danger' : 'btn-primary'} emp-clock-btn`}
+            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold shadow-lg transition cursor-pointer ${
+              isCheckedIn 
+                ? 'bg-red-600 hover:bg-red-700 text-white' 
+                : 'bg-blue-600 hover:bg-blue-500 text-white'
+            }`}
             onClick={handleToggleCheckIn}
           >
             {isCheckedIn ? <Square size={16} /> : <Play size={16} />}
@@ -107,79 +120,92 @@ const EmployeeDashboard = () => {
       </div>
 
       {/* Metrics Row */}
-      <div className="emp-metrics-grid">
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-blue">
-            <Clock size={22} color="#2563eb" />
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
+            <Clock size={22} />
           </div>
-          <div className="metric-info">
-            <span className="metric-label">Today's Attendance</span>
-            <h3 className="metric-value">{isCheckedIn ? 'Present' : 'Absent'}</h3>
-            <span className="metric-subtext">Check in: {checkInTime}</span>
-          </div>
-        </div>
-
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-green">
-            <Calendar size={22} color="#10b981" />
-          </div>
-          <div className="metric-info">
-            <span className="metric-label">Available Leave Balance</span>
-            <h3 className="metric-value">27 Days</h3>
-            <span className="metric-subtext">Casual: 8 | Sick: 5 | Annual: 14</span>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Today's Attendance</span>
+            <h3 className="text-lg font-bold text-slate-900">{isCheckedIn ? 'Present' : 'Absent'}</h3>
+            <span className="text-[11px] text-slate-400">Check in: {checkInTime}</span>
           </div>
         </div>
 
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-purple">
-            <CheckCircle2 size={22} color="#8b5cf6" />
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100">
+            <Calendar size={22} />
           </div>
-          <div className="metric-info">
-            <span className="metric-label">Assigned Tasks</span>
-            <h3 className="metric-value">{sampleTasks.filter(t => t.status === 'Pending').length} Pending</h3>
-            <span className="metric-subtext">Total {sampleTasks.length} tasks active</span>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Available Leave Balance</span>
+            <h3 className="text-lg font-bold text-slate-900">27 Days</h3>
+            <span className="text-[11px] text-slate-400">Casual: 8 | Sick: 5 | Annual: 14</span>
           </div>
         </div>
 
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-amber">
-            <DollarSign size={22} color="#d97706" />
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
+            <CheckCircle2 size={22} />
           </div>
-          <div className="metric-info">
-            <span className="metric-label">Salary & Compensation</span>
-            <h3 className="metric-value">{empSalary}</h3>
-            <span className="metric-subtext">Next payout: Sept 30, 2026</span>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Assigned Tasks</span>
+            <h3 className="text-lg font-bold text-slate-900">{sampleTasks.filter(t => t.status === 'Pending').length} Pending</h3>
+            <span className="text-[11px] text-slate-400">Total {sampleTasks.length} tasks active</span>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 border border-amber-100">
+            <DollarSign size={22} />
+          </div>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Salary & Compensation</span>
+            <h3 className="text-lg font-bold text-slate-900">{empSalary}</h3>
+            <span className="text-[11px] text-slate-400">Next payout: Sept 30, 2026</span>
           </div>
         </div>
       </div>
 
       {/* Main Grid Section */}
-      <div className="emp-main-grid">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Left Column: Tasks & Profile */}
-        <div className="emp-column">
+        <div className="space-y-6">
           {/* My Assigned Tasks */}
-          <div className="emp-card">
-            <div className="emp-card-header">
-              <div className="card-title-group">
-                <Briefcase size={18} color="#2563eb" />
+          <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 bg-slate-50/50">
+              <div className="flex items-center gap-2 font-semibold text-slate-900 text-sm">
+                <Briefcase size={18} className="text-blue-600" />
                 <h3>My Work & Deliverables</h3>
               </div>
-              <span className="badge badge-info">{sampleTasks.length} Tasks</span>
+              <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-bold text-blue-800">
+                {sampleTasks.length} Tasks
+              </span>
             </div>
-            <div className="emp-card-body">
-              <div className="task-list">
+            <div className="p-6">
+              <div className="space-y-3">
                 {sampleTasks.map((tItem) => (
-                  <div key={tItem.id} className={`task-item ${tItem.status === 'Completed' ? 'completed' : ''}`}>
+                  <div 
+                    key={tItem.id} 
+                    className={`flex items-start gap-3 rounded-xl border p-3.5 transition ${
+                      tItem.status === 'Completed' 
+                        ? 'border-slate-200 bg-slate-50 opacity-60' 
+                        : 'border-slate-200 bg-white hover:border-blue-300'
+                    }`}
+                  >
                     <input 
                       type="checkbox" 
                       checked={tItem.status === 'Completed'} 
                       onChange={() => toggleTaskStatus(tItem.id)}
-                      className="task-checkbox"
+                      className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                     />
-                    <div className="task-details">
-                      <div className="task-title">{tItem.title}</div>
-                      <div className="task-meta">
-                        <span className={`priority-tag priority-${(tItem.priority || 'Medium').toLowerCase()}`}>
+                    <div className="flex-1 space-y-1">
+                      <div className={`text-xs font-bold text-slate-900 ${tItem.status === 'Completed' ? 'line-through text-slate-400' : ''}`}>
+                        {tItem.title}
+                      </div>
+                      <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                        <span className={`font-semibold ${
+                          tItem.priority === 'High' ? 'text-red-600' : tItem.priority === 'Medium' ? 'text-amber-600' : 'text-slate-600'
+                        }`}>
                           {tItem.priority || 'Medium'} Priority
                         </span>
                         <span>Due: {tItem.dueDate || 'Today'}</span>
@@ -192,41 +218,39 @@ const EmployeeDashboard = () => {
           </div>
 
           {/* Quick Personal Info */}
-          <div className="emp-card">
-            <div className="emp-card-header">
-              <div className="card-title-group">
-                <FileText size={18} color="#10b981" />
-                <h3>Personal Record Details</h3>
-              </div>
+          <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+            <div className="border-b border-slate-200 px-6 py-4 bg-slate-50/50 flex items-center gap-2 font-semibold text-slate-900 text-sm">
+              <FileText size={18} className="text-emerald-600" />
+              <h3>Personal Record Details</h3>
             </div>
-            <div className="emp-card-body">
-              <div className="emp-info-grid">
-                <div className="info-item">
-                  <Mail size={15} color="#64748b" />
+            <div className="p-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 p-3">
+                  <Mail size={16} className="text-slate-400" />
                   <div>
-                    <div className="info-label">Email Address</div>
-                    <div className="info-val">{activeEmp.email || 'employee@company.com'}</div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Email Address</div>
+                    <div className="text-xs font-semibold text-slate-900">{activeEmp.email || 'employee@company.com'}</div>
                   </div>
                 </div>
-                <div className="info-item">
-                  <Phone size={15} color="#64748b" />
+                <div className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 p-3">
+                  <Phone size={16} className="text-slate-400" />
                   <div>
-                    <div className="info-label">Phone Number</div>
-                    <div className="info-val">{activeEmp.phone || '+91 98765 43210'}</div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Phone Number</div>
+                    <div className="text-xs font-semibold text-slate-900">{activeEmp.phone || '+91 98765 43210'}</div>
                   </div>
                 </div>
-                <div className="info-item">
-                  <Calendar size={15} color="#64748b" />
+                <div className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 p-3">
+                  <Calendar size={16} className="text-slate-400" />
                   <div>
-                    <div className="info-label">Joining Date</div>
-                    <div className="info-val">{activeEmp.joiningDate ? String(activeEmp.joiningDate).split('T')[0] : '2022-03-15'}</div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Joining Date</div>
+                    <div className="text-xs font-semibold text-slate-900">{activeEmp.joiningDate ? String(activeEmp.joiningDate).split('T')[0] : '2022-03-15'}</div>
                   </div>
                 </div>
-                <div className="info-item">
-                  <MapPin size={15} color="#64748b" />
+                <div className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 p-3">
+                  <MapPin size={16} className="text-slate-400" />
                   <div>
-                    <div className="info-label">Work Location</div>
-                    <div className="info-val">{activeEmp.address || 'Main HQ Office • Floor 4'}</div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Work Location</div>
+                    <div className="text-xs font-semibold text-slate-900">{activeEmp.address || 'Main HQ Office • Floor 4'}</div>
                   </div>
                 </div>
               </div>
@@ -235,34 +259,32 @@ const EmployeeDashboard = () => {
         </div>
 
         {/* Right Column: Announcements & Holidays */}
-        <div className="emp-column">
+        <div className="space-y-6">
           {/* Company Announcements */}
-          <div className="emp-card">
-            <div className="emp-card-header">
-              <div className="card-title-group">
-                <Megaphone size={18} color="#d97706" />
-                <h3>Company Announcements</h3>
-              </div>
+          <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+            <div className="border-b border-slate-200 px-6 py-4 bg-slate-50/50 flex items-center gap-2 font-semibold text-slate-900 text-sm">
+              <Megaphone size={18} className="text-amber-500" />
+              <h3>Company Announcements</h3>
             </div>
-            <div className="emp-card-body">
-              <div className="announcement-list">
+            <div className="p-6">
+              <div className="space-y-4">
                 {announcements.length > 0 ? announcements.map((ann, i) => (
-                  <div key={i} className="announcement-item">
-                    <div className="announcement-date">{ann.date}</div>
-                    <h4 className="announcement-title">{ann.title}</h4>
-                    <p className="announcement-desc">{ann.description || ann.content}</p>
+                  <div key={i} className="rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-1">
+                    <div className="text-[11px] font-semibold text-amber-700">{ann.date}</div>
+                    <h4 className="text-sm font-bold text-slate-900">{ann.title}</h4>
+                    <p className="text-xs text-slate-600 leading-relaxed">{ann.description || ann.content}</p>
                   </div>
                 )) : (
                   <>
-                    <div className="announcement-item">
-                      <div className="announcement-date">Today • 10:00 AM</div>
-                      <h4 className="announcement-title">Annual Townhall & Q3 Performance Review</h4>
-                      <p className="announcement-desc">All team members are invited to join the main conference room for executive updates.</p>
+                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-1">
+                      <div className="text-[11px] font-semibold text-amber-700">Today • 10:00 AM</div>
+                      <h4 className="text-sm font-bold text-slate-900">Annual Townhall & Q3 Performance Review</h4>
+                      <p className="text-xs text-slate-600 leading-relaxed">All team members are invited to join the main conference room for executive updates.</p>
                     </div>
-                    <div className="announcement-item">
-                      <div className="announcement-date">Yesterday</div>
-                      <h4 className="announcement-title">New Health Insurance & Benefits Portal Active</h4>
-                      <p className="announcement-desc">You can now submit healthcare claims directly through the HRMS documents portal.</p>
+                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-1">
+                      <div className="text-[11px] font-semibold text-amber-700">Yesterday</div>
+                      <h4 className="text-sm font-bold text-slate-900">New Health Insurance & Benefits Portal Active</h4>
+                      <p className="text-xs text-slate-600 leading-relaxed">You can now submit healthcare claims directly through the HRMS documents portal.</p>
                     </div>
                   </>
                 )}
@@ -271,24 +293,22 @@ const EmployeeDashboard = () => {
           </div>
 
           {/* Upcoming Holidays */}
-          <div className="emp-card">
-            <div className="emp-card-header">
-              <div className="card-title-group">
-                <Calendar size={18} color="#8b5cf6" />
-                <h3>Upcoming Public Holidays</h3>
-              </div>
+          <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+            <div className="border-b border-slate-200 px-6 py-4 bg-slate-50/50 flex items-center gap-2 font-semibold text-slate-900 text-sm">
+              <Calendar size={18} className="text-purple-600" />
+              <h3>Upcoming Public Holidays</h3>
             </div>
-            <div className="emp-card-body">
-              <div className="holiday-list">
+            <div className="p-6">
+              <div className="space-y-3">
                 {holidays.map((h, idx) => (
-                  <div key={idx} className="holiday-item">
-                    <div className="holiday-date-box">
-                      <Calendar size={16} color="#475569" />
+                  <div key={idx} className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 p-3">
+                    <div className="flex items-center gap-2.5 text-xs font-semibold text-slate-700">
+                      <Calendar size={16} className="text-slate-400" />
                       <span>{h.date}</span>
                     </div>
-                    <div className="holiday-info">
-                      <span className="holiday-name">{h.name}</span>
-                      <span className="holiday-day">{h.day}</span>
+                    <div className="text-right">
+                      <div className="text-xs font-bold text-slate-900">{h.name}</div>
+                      <div className="text-[10px] text-slate-500">{h.day}</div>
                     </div>
                   </div>
                 ))}

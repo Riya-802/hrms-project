@@ -15,34 +15,38 @@ const EmployeeHolidays = () => {
   ];
 
   return (
-    <div className="employee-page-container">
-      <div className="emp-card">
-        <div className="emp-card-header">
-          <h3>Annual Official Holiday Calendar (2026)</h3>
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+          <h3 className="text-lg font-bold text-slate-900">Annual Official Holiday Calendar (2026)</h3>
         </div>
-        <div className="emp-card-body">
-          <div className="table-responsive">
-            <table className="table">
+        <div className="p-6">
+          <div className="overflow-x-auto rounded-lg border border-slate-200">
+            <table className="w-full text-left border-collapse">
               <thead>
-                <tr>
-                  <th>Holiday Name</th>
-                  <th>Date</th>
-                  <th>Day</th>
-                  <th>Category</th>
+                <tr className="bg-slate-50 border-b border-slate-200">
+                  <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Holiday Name</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Day</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Category</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-slate-100">
                 {holidays.map((h, i) => (
-                  <tr key={i}>
-                    <td style={{ fontWeight: 600 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Calendar size={18} color="#8b5cf6" />
+                  <tr key={i} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-6 py-4 text-sm font-semibold text-slate-900 whitespace-nowrap">
+                      <div className="flex items-center gap-2.5">
+                        <Calendar size={18} className="text-purple-600 shrink-0" />
                         <span>{h.name}</span>
                       </div>
                     </td>
-                    <td>{h.date}</td>
-                    <td>{h.day}</td>
-                    <td><span className="badge badge-purple">{h.type}</span></td>
+                    <td className="px-6 py-4 text-sm text-slate-600 whitespace-nowrap">{h.date}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600 whitespace-nowrap">{h.day}</td>
+                    <td className="px-6 py-4 text-sm whitespace-nowrap">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        {h.type}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>

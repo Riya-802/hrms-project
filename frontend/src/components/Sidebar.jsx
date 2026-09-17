@@ -48,7 +48,6 @@ const Sidebar = ({ portalType }) => {
   const activePortal = portalType || userRole || 'admin';
   const isAdmin = activePortal === 'admin';
 
-  // Open accordion sections by default if location matches
   const [openSubmenus, setOpenSubmenus] = useState({
     employees: true,
     departments: true,
@@ -267,35 +266,45 @@ const Sidebar = ({ portalType }) => {
     <>
       {/* Mobile Backdrop */}
       {isMobileSidebarOpen && (
-        <div className="sidebar-mobile-backdrop" onClick={closeMobileSidebar} />
+        <div 
+          className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-40 lg:hidden transition-opacity" 
+          onClick={closeMobileSidebar} 
+        />
       )}
 
-      <aside className={`sidebar sidebar-theme-dark ${isMobileSidebarOpen ? 'open' : ''} ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+      <aside className={`fixed lg:sticky top-0 left-0 h-screen z-50 flex flex-col shrink-0 bg-gradient-to-b from-[#0b1329] via-[#111c38] to-[#1e293b] text-slate-100 border-r border-slate-800/80 shadow-2xl transition-all duration-300 ${
+        isSidebarCollapsed ? 'w-20' : 'w-64'
+      } ${
+        isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      }`}>
         {/* Header */}
-        <div className="sidebar-header">
-          <div className="sidebar-logo-wrapper">
-            <div className="sidebar-logo-icon">
-              {isAdmin ? <ShieldCheck size={22} color="#38bdf8" /> : <UserCheck size={22} color="#10b981" />}
+        <div className="flex items-center justify-between p-4 border-b border-slate-800/80">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-blue-500 flex items-center justify-center text-white font-extrabold text-lg shadow-lg shadow-blue-600/30 shrink-0">
+              {isAdmin ? <ShieldCheck size={22} className="text-sky-300" /> : <UserCheck size={22} className="text-emerald-300" />}
             </div>
             {!isSidebarCollapsed && (
               <div>
-                <div className="sidebar-logo-text">HRMS</div>
-                <div className={`sidebar-logo-tag ${isAdmin ? 'admin-tag' : 'employee-tag'}`}>
+                <div className="text-lg font-extrabold tracking-tight text-white leading-none">HRMS</div>
+                <div className={`text-[10px] font-bold uppercase tracking-widest mt-1 ${isAdmin ? 'text-sky-400' : 'text-emerald-400'}`}>
                   {isAdmin ? 'ADMIN PORTAL' : 'EMPLOYEE PORTAL'}
                 </div>
               </div>
             )}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+          <div className="flex items-center gap-1">
             <button 
-              className="sidebar-collapse-toggle-btn"
+              className="w-8 h-8 rounded-lg bg-slate-800/60 hover:bg-slate-700/80 border border-slate-700/50 flex items-center justify-center text-slate-400 hover:text-white transition"
               onClick={toggleSidebarCollapse}
               title={isSidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
             >
-              {isSidebarCollapsed ? <PanelLeftOpen size={19} /> : <PanelLeftClose size={19} />}
+              {isSidebarCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
             </button>
-            <button className="sidebar-close-btn" onClick={closeMobileSidebar}>
+            <button 
+              className="lg:hidden p-1.5 text-slate-400 hover:text-white"
+              onClick={closeMobileSidebar}
+            >
               <X size={20} />
             </button>
           </div>
@@ -303,22 +312,26 @@ const Sidebar = ({ portalType }) => {
 
         {/* User Info Quick Card */}
         {!isSidebarCollapsed && user && (
-          <div className="sidebar-user-card">
+          <div className="flex items-center gap-3 p-3 mx-3 my-3 bg-slate-800/40 rounded-xl border border-slate-700/40">
             <img 
               src={user.profilePhoto || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256'} 
               alt={user.fullName} 
-              className="sidebar-user-avatar"
+              className="w-9 h-9 rounded-full object-cover shrink-0 border border-slate-600"
             />
-            <div className="sidebar-user-info">
-              <div className="sidebar-user-name">{user.fullName}</div>
-              <div className="sidebar-user-role">{user.designation || (isAdmin ? 'System Admin' : 'Employee')}</div>
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-bold text-white truncate">{user.fullName}</div>
+              <div className="text-[11px] text-slate-400 truncate">{user.designation || (isAdmin ? 'System Admin' : 'Employee')}</div>
             </div>
           </div>
         )}
 
         {/* Navigation Menu */}
-        <nav className="sidebar-nav">
-          {!isSidebarCollapsed && <div className="sidebar-nav-title">{isAdmin ? 'ADMIN NAVIGATION' : 'EMPLOYEE MENU'}</div>}
+        <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-1">
+          {!isSidebarCollapsed && (
+            <div className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 px-3 py-2">
+              {isAdmin ? 'ADMIN NAVIGATION' : 'EMPLOYEE MENU'}
+            </div>
+          )}
           
           {currentMenuItems.map((item, idx) => {
             const Icon = item.icon;
@@ -328,31 +341,39 @@ const Sidebar = ({ portalType }) => {
               const isChildActive = item.children.some(c => location.pathname === c.path);
 
               return (
-                <div key={item.key || idx} className="sidebar-submenu-group">
+                <div key={item.key || idx} className="space-y-1">
                   <button
                     onClick={() => toggleSubmenu(item.key)}
-                    className={`sidebar-link sidebar-parent-link ${isChildActive ? 'child-active' : ''}`}
+                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm transition ${
+                      isChildActive 
+                        ? 'text-sky-400 bg-sky-950/30 border border-sky-800/30' 
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                    }`}
                     title={isSidebarCollapsed ? item.title : ''}
                   >
-                    <div className="sidebar-link-content">
-                      <Icon size={19} />
+                    <div className="flex items-center gap-3">
+                      <Icon size={19} className={isChildActive ? 'text-sky-400' : 'text-slate-400'} />
                       {!isSidebarCollapsed && <span>{item.title}</span>}
                     </div>
                     {!isSidebarCollapsed && (
-                      isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />
+                      isOpen ? <ChevronDown size={15} /> : <ChevronRight size={15} />
                     )}
                   </button>
 
                   {!isSidebarCollapsed && isOpen && (
-                    <div className="sidebar-sub-items">
+                    <div className="ml-4 pl-3 border-l border-slate-800 space-y-1 my-1">
                       {item.children.map((child, cIdx) => (
                         <NavLink
                           key={cIdx}
                           to={child.path}
                           onClick={closeMobileSidebar}
-                          className={({ isActive }) => `sidebar-sub-link ${isActive ? 'active' : ''}`}
+                          className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition ${
+                            isActive 
+                              ? 'text-sky-400 font-bold bg-sky-950/50' 
+                              : 'text-slate-400 hover:text-white hover:bg-slate-800/40'
+                          }`}
                         >
-                          <span className="sub-link-dot">•</span>
+                          <span className="text-[10px] text-slate-500">•</span>
                           <span>{child.title}</span>
                         </NavLink>
                       ))}
@@ -367,7 +388,11 @@ const Sidebar = ({ portalType }) => {
                 key={idx}
                 to={item.path} 
                 onClick={closeMobileSidebar}
-                className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
+                className={({ isActive }) => `flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm transition ${
+                  isActive 
+                    ? 'text-sky-400 bg-sky-950/40 border border-sky-800/40 font-bold' 
+                    : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+                }`}
                 title={isSidebarCollapsed ? item.title : ''}
               >
                 <Icon size={19} />
@@ -378,20 +403,28 @@ const Sidebar = ({ portalType }) => {
         </nav>
 
         {/* Bottom System Links */}
-        <div className="sidebar-bottom">
+        <div className="p-3 border-t border-slate-800/80 space-y-1">
           {!isSidebarCollapsed && (
-            <div className="sidebar-system-badge">
-              <Sparkles size={14} color="#38bdf8" />
+            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/30 text-xs font-semibold text-slate-400 border border-slate-800 mb-2">
+              <Sparkles size={14} className="text-sky-400 shrink-0" />
               <span>v2.4 Enterprise Edition</span>
             </div>
           )}
 
-          {!isSidebarCollapsed && <div className="sidebar-nav-title">ACCOUNT</div>}
+          {!isSidebarCollapsed && (
+            <div className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 px-3 py-1">
+              ACCOUNT
+            </div>
+          )}
 
           <NavLink 
             to={isAdmin ? '/admin/settings' : '/employee/settings'} 
             onClick={closeMobileSidebar}
-            className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
+            className={({ isActive }) => `flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm transition ${
+              isActive 
+                ? 'text-sky-400 bg-sky-950/40 border border-sky-800/40 font-bold' 
+                : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+            }`}
             title={isSidebarCollapsed ? 'Settings' : ''}
           >
             <Settings size={19} />
@@ -401,7 +434,7 @@ const Sidebar = ({ portalType }) => {
           <a 
             href="#logout" 
             onClick={handleLogoutClick} 
-            className="sidebar-link logout-btn"
+            className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-300 hover:text-rose-400 hover:bg-rose-950/30 transition"
             title={isSidebarCollapsed ? 'Logout' : ''}
           >
             <LogOut size={19} />

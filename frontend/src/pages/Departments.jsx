@@ -48,42 +48,31 @@ const Departments = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       {/* 1. Page Hero Banner */}
-      <div 
-        style={{
-          background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '1.75rem 2rem',
-          color: '#ffffff',
-          marginBottom: '2rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '1.25rem',
-          boxShadow: 'var(--shadow-md)'
-        }}
-      >
+      <div className="rounded-2xl bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6 border border-slate-800">
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
-            <span style={{ fontSize: '0.75rem', background: 'rgba(255, 255, 255, 0.15)', padding: '0.2rem 0.65rem', borderRadius: 'var(--radius-full)', fontWeight: '700', textTransform: 'uppercase' }}>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-blue-200 backdrop-blur-xs">
               Organizational Units
             </span>
           </div>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: '800' }}>Departments Management</h2>
-          <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginTop: '0.2rem' }}>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl text-white">Departments Management</h2>
+          <p className="text-sm text-slate-300 mt-1 max-w-xl">
             Structure, manage, and monitor company departments and team headcount allocations.
           </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-          <div style={{ background: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255,255,255,0.2)', padding: '0.6rem 1.1rem', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <Building2 size={18} color="#93c5fd" />
-            <span style={{ fontSize: '0.9rem', fontWeight: '700' }}>{stats.totalDepartments} Active Departments</span>
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="inline-flex items-center gap-2.5 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-semibold text-blue-100 border border-white/20 backdrop-blur-xs">
+            <Building2 size={18} className="text-blue-300" />
+            <span>{stats.totalDepartments} Active Departments</span>
           </div>
 
-          <button className="btn btn-primary" onClick={() => navigate('/admin/departments/add')} style={{ padding: '0.75rem 1.4rem' }}>
+          <button 
+            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg hover:bg-blue-500 transition cursor-pointer" 
+            onClick={() => navigate('/admin/departments/add')}
+          >
             <Plus size={18} />
             <span>Add Department</span>
           </button>
@@ -91,53 +80,58 @@ const Departments = () => {
       </div>
 
       {/* 2. Toolbar & View Toggle */}
-      <div className="card" style={{ marginBottom: '1.75rem' }}>
-        <div className="card-body" style={{ padding: '1.25rem 1.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-            <div className="search-input-wrapper" style={{ flex: 1, minWidth: '200px' }}>
-              <Search className="navbar-search-icon" />
-              <input 
-                type="text" 
-                placeholder="Search departments by name, ID, or mandate..." 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              {searchTerm && (
-                <button 
-                  onClick={() => setSearchTerm('')}
-                  style={{ position: 'absolute', right: '0.85rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
-                >
-                  <X size={16} />
-                </button>
-              )}
-            </div>
+      <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="relative flex-1 w-full sm:w-auto min-w-[280px]">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <input 
+              type="text" 
+              placeholder="Search departments..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full rounded-lg border border-slate-300 bg-slate-50 pl-10 pr-9 py-2.5 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-blue-600 focus:bg-white focus:ring-2 focus:ring-blue-600/20"
+            />
+            {searchTerm && (
+              <button 
+                onClick={() => setSearchTerm('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
 
-            {/* View Mode Toggle */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: '#f1f5f9', padding: '0.25rem', borderRadius: 'var(--radius-md)' }}>
-              <button 
-                onClick={() => setViewMode('grid')}
-                className={`btn-icon ${viewMode === 'grid' ? 'view' : ''}`}
-                style={{ borderRadius: 'var(--radius-sm)', border: 'none', backgroundColor: viewMode === 'grid' ? '#ffffff' : 'transparent', color: viewMode === 'grid' ? 'var(--primary)' : 'var(--text-muted)' }}
-                title="Grid Cards View"
-              >
-                <LayoutGrid size={18} />
-              </button>
-              <button 
-                onClick={() => setViewMode('table')}
-                className={`btn-icon ${viewMode === 'table' ? 'view' : ''}`}
-                style={{ borderRadius: 'var(--radius-sm)', border: 'none', backgroundColor: viewMode === 'table' ? '#ffffff' : 'transparent', color: viewMode === 'table' ? 'var(--primary)' : 'var(--text-muted)' }}
-                title="Table Directory View"
-              >
-                <List size={18} />
-              </button>
-            </div>
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-1 rounded-lg bg-slate-100 p-1 border border-slate-200">
+            <button 
+              onClick={() => setViewMode('grid')}
+              className={`rounded-md p-1.5 transition cursor-pointer ${
+                viewMode === 'grid' 
+                  ? 'bg-white text-blue-600 shadow-xs font-semibold' 
+                  : 'text-slate-500 hover:text-slate-900'
+              }`}
+              title="Grid Cards View"
+            >
+              <LayoutGrid size={18} />
+            </button>
+            <button 
+              onClick={() => setViewMode('table')}
+              className={`rounded-md p-1.5 transition cursor-pointer ${
+                viewMode === 'table' 
+                  ? 'bg-white text-blue-600 shadow-xs font-semibold' 
+                  : 'text-slate-500 hover:text-slate-900'
+              }`}
+              title="Table Directory View"
+            >
+              <List size={18} />
+            </button>
           </div>
         </div>
       </div>
 
       {/* 3. Display View: Cards Grid OR Table */}
       {viewMode === 'grid' ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredDepartments.length > 0 ? (
             filteredDepartments.map((dept) => {
               const assignedEmployees = employees.filter((e) => e.department === dept.name);
@@ -145,62 +139,36 @@ const Departments = () => {
               return (
                 <div 
                   key={dept.id}
-                  className="card"
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                    position: 'relative'
-                  }}
+                  className="rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md flex flex-col justify-between overflow-hidden"
                 >
-                  <div className="card-body">
-                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', marginBottom: '1rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-                        <div 
-                          style={{
-                            width: '46px',
-                            height: '46px',
-                            borderRadius: 'var(--radius-md)',
-                            background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
-                            color: 'var(--primary)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontWeight: '800'
-                          }}
-                        >
+                  <div className="p-6">
+                    <div className="flex items-start justify-between gap-4 mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 font-bold border border-blue-100">
                           <Building2 size={24} />
                         </div>
                         <div>
-                          <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-main)' }}>{dept.name}</h3>
-                          <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: '600' }}>ID: {dept.id}</span>
+                          <h3 className="text-base font-bold text-slate-900">{dept.name}</h3>
+                          <span className="text-xs font-medium text-slate-500">ID: {dept.id}</span>
                         </div>
                       </div>
 
                       <StatusBadge status={dept.status} />
                     </div>
 
-                    <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: '1.5', minHeight: '50px' }}>
+                    <p className="text-xs text-slate-500 leading-relaxed min-h-[48px] line-clamp-3">
                       {dept.description}
                     </p>
 
                     {/* Member Avatars & Headcount Chip */}
-                    <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <div className="flex items-center">
                         {assignedEmployees.slice(0, 4).map((emp, i) => (
                           <img 
                             key={emp.id}
                             src={emp.profilePhoto} 
                             alt={emp.fullName}
-                            style={{
-                              width: '30px',
-                              height: '30px',
-                              borderRadius: '50%',
-                              border: '2px solid #ffffff',
-                              marginLeft: i > 0 ? '-8px' : 0,
-                              objectFit: 'cover'
-                            }}
+                            className={`h-7 w-7 rounded-full border-2 border-white object-cover ${i > 0 ? '-ml-2' : ''}`}
                             onError={(e) => {
                               e.target.src = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=256';
                             }}
@@ -208,7 +176,7 @@ const Departments = () => {
                         ))}
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: '#eff6ff', color: '#1e40af', padding: '0.3rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.82rem', fontWeight: '700' }}>
+                      <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
                         <Users size={14} />
                         <span>{count} Staff</span>
                       </div>
@@ -216,23 +184,23 @@ const Departments = () => {
                   </div>
 
                   {/* Card Action Buttons */}
-                  <div style={{ padding: '0.85rem 1.5rem', backgroundColor: '#f8fafc', borderTop: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem' }}>
+                  <div className="flex items-center justify-end gap-1 border-t border-slate-100 bg-slate-50 px-6 py-3">
                     <button 
-                      className="btn-icon view" 
+                      className="rounded-md p-1.5 text-slate-500 hover:bg-slate-200 hover:text-blue-600 transition cursor-pointer" 
                       title="View Department Overview"
                       onClick={() => navigate(`/admin/departments/${dept.id}`)}
                     >
                       <Eye size={16} />
                     </button>
                     <button 
-                      className="btn-icon edit" 
+                      className="rounded-md p-1.5 text-slate-500 hover:bg-slate-200 hover:text-amber-600 transition cursor-pointer" 
                       title="Edit Department Details"
                       onClick={() => navigate(`/admin/departments/${dept.id}/edit`)}
                     >
                       <Edit3 size={16} />
                     </button>
                     <button 
-                      className="btn-icon delete" 
+                      className="rounded-md p-1.5 text-slate-500 hover:bg-slate-200 hover:text-red-600 transition cursor-pointer" 
                       title="Delete Department"
                       onClick={() => handleDeleteClick(dept)}
                     >
@@ -243,7 +211,7 @@ const Departments = () => {
               );
             })
           ) : (
-            <div className="card" style={{ gridColumn: '1 / -1', padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+            <div className="col-span-full rounded-xl border border-slate-200 bg-white p-12 text-center text-sm text-slate-500 shadow-sm">
               No departments found matching your search.
             </div>
           )}

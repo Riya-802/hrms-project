@@ -12,12 +12,12 @@ const EditDepartment = () => {
 
   if (!department) {
     return (
-      <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
-        <h3>Department Not Found</h3>
-        <p style={{ color: 'var(--text-muted)', margin: '1rem 0' }}>
+      <div className="rounded-xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+        <h3 className="text-lg font-bold text-slate-900">Department Not Found</h3>
+        <p className="my-3 text-sm text-slate-500">
           Unable to find department record with ID "{id}".
         </p>
-        <button className="btn btn-primary" onClick={() => navigate('/admin/departments')}>
+        <button className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition cursor-pointer" onClick={() => navigate('/admin/departments')}>
           Return to Departments
         </button>
       </div>
@@ -30,12 +30,10 @@ const EditDepartment = () => {
   };
 
   return (
-    <div>
-      <div className="page-header">
-        <div className="page-header-text">
-          <h2>Edit Department: {department.name} ({department.id})</h2>
-          <p>Modify department title, description, or activation status</p>
-        </div>
+    <div className="space-y-6">
+      <div className="space-y-1">
+        <h2 className="text-2xl font-bold text-slate-900">Edit Department: {department.name} ({department.id})</h2>
+        <p className="text-sm text-slate-500">Modify department title, description, or activation status</p>
       </div>
 
       <DepartmentForm 

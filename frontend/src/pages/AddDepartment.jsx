@@ -13,12 +13,10 @@ const AddDepartment = () => {
   };
 
   return (
-    <div>
-      <div className="page-header">
-        <div className="page-header-text">
-          <h2>Create New Department</h2>
-          <p>Add a new operational department to structure company employees</p>
-        </div>
+    <div className="space-y-6">
+      <div className="space-y-1">
+        <h2 className="text-2xl font-bold text-slate-900">Create New Department</h2>
+        <p className="text-sm text-slate-500">Add a new operational department to structure company employees</p>
       </div>
 
       <DepartmentForm isEdit={false} onSubmitHandler={handleAddSubmit} />

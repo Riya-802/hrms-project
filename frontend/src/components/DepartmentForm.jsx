@@ -36,55 +36,67 @@ const DepartmentForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
   };
 
   return (
-    <div className="form-card" style={{ maxWidth: '650px' }}>
+    <div className="max-w-[650px] rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <form onSubmit={handleSubmit}>
-        <div className="form-grid" style={{ gridTemplateColumns: '1fr' }}>
+        <div className="grid grid-cols-1 gap-5">
           {/* Department Name */}
-          <div className="form-group">
-            <label>Department Name <span className="required">*</span></label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Department Name <span className="text-red-500 ml-0.5">*</span></label>
             <input 
               type="text" 
               name="name" 
               value={formData.name} 
               onChange={handleChange}
               placeholder="e.g. Human Resources"
-              className={`form-control ${errors.name ? 'error' : ''}`}
+              className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                errors.name 
+                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' 
+                  : 'border-slate-300 focus:border-blue-600 focus:ring-blue-600/20'
+              }`}
             />
-            {errors.name && <span className="error-msg">{errors.name}</span>}
+            {errors.name && <span className="text-xs font-medium text-red-600 mt-0.5">{errors.name}</span>}
           </div>
 
           {/* Description */}
-          <div className="form-group">
-            <label>Description</label>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Description</label>
             <textarea 
               name="description" 
               rows="4" 
               value={formData.description} 
               onChange={handleChange}
               placeholder="Briefly describe the responsibilities and scope of this department..."
-              className="form-control"
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20"
             />
           </div>
 
           {/* Status */}
-          <div className="form-group">
-            <label>Status</label>
-            <select name="status" value={formData.status} onChange={handleChange} className="form-control">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-slate-700">Status</label>
+            <select 
+              name="status" 
+              value={formData.status} 
+              onChange={handleChange} 
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 bg-white"
+            >
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
           </div>
         </div>
 
-        <div className="form-actions">
+        <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-200 pt-6">
           <button 
             type="button" 
-            className="btn btn-secondary" 
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition cursor-pointer" 
             onClick={() => navigate('/admin/departments')}
           >
             Cancel
           </button>
-          <button type="submit" className="btn btn-primary">
+          <button 
+            type="submit" 
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition cursor-pointer"
+          >
             {isEdit ? 'Update Department' : 'Save Department'}
           </button>
         </div>

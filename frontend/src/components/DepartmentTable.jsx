@@ -24,57 +24,57 @@ const DepartmentTable = ({ departments = [] }) => {
   };
 
   return (
-    <div className="card">
-      <div className="table-container">
-        <table className="data-table">
+    <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+      <div className="w-full overflow-x-auto">
+        <table className="w-full text-left text-sm border-collapse">
           <thead>
-            <tr>
-              <th style={{ whiteSpace: 'nowrap' }}>Dept ID</th>
-              <th style={{ whiteSpace: 'nowrap' }}>Department Name</th>
-              <th>Description</th>
-              <th style={{ whiteSpace: 'nowrap', textAlign: 'center' }}>No. of Employees</th>
-              <th style={{ whiteSpace: 'nowrap', textAlign: 'center' }}>Status</th>
-              <th style={{ whiteSpace: 'nowrap', textAlign: 'right' }}>Actions</th>
+            <tr className="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+              <th className="px-4 py-3.5 whitespace-nowrap">Dept ID</th>
+              <th className="px-4 py-3.5 whitespace-nowrap">Department Name</th>
+              <th className="px-4 py-3.5">Description</th>
+              <th className="px-4 py-3.5 whitespace-nowrap text-center">No. of Employees</th>
+              <th className="px-4 py-3.5 whitespace-nowrap text-center">Status</th>
+              <th className="px-4 py-3.5 whitespace-nowrap text-right">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-200">
             {departments.length > 0 ? (
               departments.map((dept) => {
                 const count = employees.filter((e) => e.department === dept.name).length;
                 return (
-                  <tr key={dept.id}>
-                    <td style={{ fontWeight: '600', color: 'var(--primary)', whiteSpace: 'nowrap' }}>{dept.id}</td>
-                    <td style={{ fontWeight: '600', whiteSpace: 'nowrap' }}>{dept.name}</td>
-                    <td style={{ maxWidth: '380px', whiteSpace: 'normal', wordBreak: 'break-word', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                  <tr key={dept.id} className="hover:bg-slate-50/70 transition-colors">
+                    <td className="px-4 py-3.5 font-semibold text-blue-600 whitespace-nowrap">{dept.id}</td>
+                    <td className="px-4 py-3.5 font-semibold text-slate-900 whitespace-nowrap">{dept.name}</td>
+                    <td className="px-4 py-3.5 max-w-[380px] whitespace-normal break-words text-slate-500 text-xs leading-relaxed">
                       {dept.description}
                     </td>
-                    <td style={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontWeight: '600' }}>
-                        <Users size={16} color="var(--accent)" />
+                    <td className="px-4 py-3.5 whitespace-nowrap text-center">
+                      <div className="inline-flex items-center gap-1.5 font-semibold text-slate-700">
+                        <Users size={16} className="text-blue-600" />
                         <span>{count}</span>
                       </div>
                     </td>
-                    <td style={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
+                    <td className="px-4 py-3.5 whitespace-nowrap text-center">
                       <StatusBadge status={dept.status} />
                     </td>
-                    <td style={{ whiteSpace: 'nowrap' }}>
-                      <div className="action-buttons" style={{ justifyContent: 'flex-end' }}>
+                    <td className="px-4 py-3.5 whitespace-nowrap text-right">
+                      <div className="flex items-center justify-end gap-1">
                         <button 
-                          className="btn-icon view" 
+                          className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-blue-600 transition cursor-pointer" 
                           title="View Department Details"
                           onClick={() => navigate(`/admin/departments/${dept.id}`)}
                         >
                           <Eye size={16} />
                         </button>
                         <button 
-                          className="btn-icon edit" 
+                          className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-amber-600 transition cursor-pointer" 
                           title="Edit Department"
                           onClick={() => navigate(`/admin/departments/${dept.id}/edit`)}
                         >
                           <Edit3 size={16} />
                         </button>
                         <button 
-                          className="btn-icon delete" 
+                          className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-red-600 transition cursor-pointer" 
                           title="Delete Department"
                           onClick={() => handleDeleteClick(dept)}
                         >
@@ -87,7 +87,7 @@ const DepartmentTable = ({ departments = [] }) => {
               })
             ) : (
               <tr>
-                <td colSpan="6" style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--text-muted)' }}>
+                <td colSpan="6" className="text-center py-10 text-slate-500">
                   No departments found.
                 </td>
               </tr>

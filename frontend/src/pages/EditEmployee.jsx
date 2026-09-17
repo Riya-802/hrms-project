@@ -12,12 +12,12 @@ const EditEmployee = () => {
 
   if (!employee) {
     return (
-      <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
-        <h3>Employee Not Found</h3>
-        <p style={{ color: 'var(--text-muted)', margin: '1rem 0' }}>
+      <div className="rounded-xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+        <h3 className="text-lg font-bold text-slate-900">Employee Not Found</h3>
+        <p className="my-3 text-sm text-slate-500">
           Unable to locate employee with ID "{id}".
         </p>
-        <button className="btn btn-primary" onClick={() => navigate('/admin/employees')}>
+        <button className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition cursor-pointer" onClick={() => navigate('/admin/employees')}>
           Return to Employees
         </button>
       </div>
@@ -30,12 +30,10 @@ const EditEmployee = () => {
   };
 
   return (
-    <div>
-      <div className="page-header">
-        <div className="page-header-text">
-          <h2>Edit Employee: {employee.fullName} ({employee.id})</h2>
-          <p>Modify employee credentials, designation, salary, or department placement</p>
-        </div>
+    <div className="space-y-6">
+      <div className="space-y-1">
+        <h2 className="text-2xl font-bold text-slate-900">Edit Employee: {employee.fullName} ({employee.id})</h2>
+        <p className="text-sm text-slate-500">Modify employee credentials, designation, salary, or department placement</p>
       </div>
 
       <EmployeeForm 

@@ -54,20 +54,29 @@ const DepartmentDetails = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       {/* Top Controls */}
-      <div className="page-header">
-        <button className="btn btn-secondary" onClick={() => navigate('/admin/departments')}>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <button 
+          className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-xs" 
+          onClick={() => navigate('/admin/departments')}
+        >
           <ArrowLeft size={16} />
           <span>Back to Departments</span>
         </button>
 
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <button className="btn btn-secondary" onClick={() => navigate(`/admin/departments/${department.id}/edit`)}>
+        <div className="flex items-center gap-3">
+          <button 
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-xs" 
+            onClick={() => navigate(`/admin/departments/${department.id}/edit`)}
+          >
             <Edit3 size={16} />
             <span>Edit Department</span>
           </button>
-          <button className="btn btn-danger" onClick={handleDelete}>
+          <button 
+            className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-red-700 transition cursor-pointer shadow-xs" 
+            onClick={handleDelete}
+          >
             <Trash2 size={16} />
             <span>Delete Department</span>
           </button>
@@ -75,58 +84,39 @@ const DepartmentDetails = () => {
       </div>
 
       {/* Department Banner & Overview */}
-      <div className="card" style={{ marginBottom: '2rem' }}>
-        <div 
-          style={{
-            height: '100px',
-            background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%)',
-            position: 'relative'
-          }}
-        />
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div className="h-28 bg-gradient-to-r from-slate-900 via-blue-900 to-blue-600" />
 
-        <div className="card-body" style={{ marginTop: '-40px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1.25rem' }}>
-            <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-end' }}>
-              <div 
-                style={{
-                  width: '80px',
-                  height: '80px',
-                  borderRadius: 'var(--radius-lg)',
-                  backgroundColor: '#ffffff',
-                  color: 'var(--primary)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: 'var(--shadow-md)',
-                  border: '3px solid #ffffff'
-                }}
-              >
+        <div className="-mt-10 p-6 space-y-6">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div className="flex flex-wrap items-end gap-5">
+              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white text-blue-600 shadow-md border-4 border-white">
                 <Building2 size={40} />
               </div>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <h2 style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--text-main)' }}>{department.name}</h2>
+              <div className="mb-1 space-y-0.5">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-2xl font-bold text-slate-900">{department.name}</h2>
                   <StatusBadge status={department.status} />
                 </div>
-                <div style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-                  Department Code: <strong>{department.id}</strong>
+                <div className="text-sm text-slate-500">
+                  Department Code: <strong className="text-slate-800">{department.id}</strong>
                 </div>
               </div>
             </div>
 
             {/* Department Headcount & Payroll Metrics */}
-            <div style={{ display: 'flex', gap: '1.25rem' }}>
-              <div style={{ padding: '0.75rem 1.25rem', backgroundColor: '#eff6ff', borderRadius: 'var(--radius-md)', border: '1px solid #bfdbfe' }}>
-                <div style={{ fontSize: '0.75rem', color: '#1e40af', fontWeight: '700', textTransform: 'uppercase' }}>Assigned Staff</div>
-                <div style={{ fontSize: '1.4rem', fontWeight: '800', color: '#1e3a8a', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <div className="flex items-center gap-4">
+              <div className="rounded-xl border border-blue-200 bg-blue-50/70 px-5 py-3">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-blue-700">Assigned Staff</div>
+                <div className="mt-0.5 flex items-center gap-1.5 text-xl font-extrabold text-blue-900">
                   <Users size={18} />
                   <span>{assignedEmployees.length}</span>
                 </div>
               </div>
 
-              <div style={{ padding: '0.75rem 1.25rem', backgroundColor: '#ecfdf5', borderRadius: 'var(--radius-md)', border: '1px solid #a7f3d0' }}>
-                <div style={{ fontSize: '0.75rem', color: '#047857', fontWeight: '700', textTransform: 'uppercase' }}>Annual Budget</div>
-                <div style={{ fontSize: '1.4rem', fontWeight: '800', color: '#065f46', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50/70 px-5 py-3">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-700">Annual Budget</div>
+                <div className="mt-0.5 flex items-center gap-1 text-xl font-extrabold text-emerald-900">
                   <DollarSign size={18} />
                   <span>{formattedDeptPayroll}</span>
                 </div>
@@ -134,11 +124,11 @@ const DepartmentDetails = () => {
             </div>
           </div>
 
-          <div style={{ marginTop: '1.75rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border-color)' }}>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '700', marginBottom: '0.3rem' }}>
+          <div className="border-t border-slate-200 pt-5">
+            <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
               Department Description & Mandate
             </div>
-            <p style={{ color: 'var(--text-main)', lineHeight: '1.6', fontSize: '0.95rem' }}>
+            <p className="text-sm text-slate-700 leading-relaxed">
               {department.description || 'No description provided for this department.'}
             </p>
           </div>
@@ -146,19 +136,20 @@ const DepartmentDetails = () => {
       </div>
 
       {/* Department Staff Roster */}
-      <div className="page-header" style={{ marginBottom: '1rem' }}>
-        <div className="page-header-text">
-          <h3>Department Staff Roster ({assignedEmployees.length})</h3>
-          <p>Employees currently registered under the {department.name} department</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h3 className="text-lg font-bold text-slate-900">Department Staff Roster ({assignedEmployees.length})</h3>
+          <p className="text-xs text-slate-500">Employees currently registered under the {department.name} department</p>
         </div>
 
-        <div className="search-input-wrapper" style={{ minWidth: '280px' }}>
-          <Search className="navbar-search-icon" />
+        <div className="relative min-w-[280px]">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           <input 
             type="text" 
             placeholder="Search staff in department..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full rounded-lg border border-slate-300 bg-white pl-10 pr-4 py-2 text-sm text-slate-900 placeholder-slate-400 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20"
           />
         </div>
       </div>

@@ -15,12 +15,10 @@ const AddEmployee = () => {
   };
 
   return (
-    <div>
-      <div className="page-header">
-        <div className="page-header-text">
-          <h2>Add New Employee</h2>
-          <p>Complete the form below to register a new employee into the system</p>
-        </div>
+    <div className="space-y-6">
+      <div className="space-y-1">
+        <h2 className="text-2xl font-bold text-slate-900">Add New Employee</h2>
+        <p className="text-sm text-slate-500">Complete the form below to register a new employee into the system</p>
       </div>
 
       <EmployeeForm isEdit={false} onSubmitHandler={handleAddSubmit} />

@@ -13,57 +13,68 @@ const EmployeeWork = () => {
   ];
 
   return (
-    <div className="employee-page-container">
-      <div className="emp-metrics-grid">
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-blue">
-            <Briefcase size={22} color="#2563eb" />
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
+            <Briefcase size={22} />
           </div>
-          <div className="metric-info">
-            <span className="metric-label">Total Assigned</span>
-            <h3 className="metric-value">{activeTasks.length} Tasks</h3>
-          </div>
-        </div>
-
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-amber">
-            <Clock size={22} color="#d97706" />
-          </div>
-          <div className="metric-info">
-            <span className="metric-label">Pending Action</span>
-            <h3 className="metric-value">{activeTasks.filter(t => t.status !== 'Completed').length} Pending</h3>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Total Assigned</span>
+            <h3 className="text-lg font-bold text-slate-900">{activeTasks.length} Tasks</h3>
           </div>
         </div>
 
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-green">
-            <CheckCircle2 size={22} color="#10b981" />
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 border border-amber-100">
+            <Clock size={22} />
           </div>
-          <div className="metric-info">
-            <span className="metric-label">Completed</span>
-            <h3 className="metric-value">{activeTasks.filter(t => t.status === 'Completed').length} Done</h3>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Pending Action</span>
+            <h3 className="text-lg font-bold text-slate-900">{activeTasks.filter(t => t.status !== 'Completed').length} Pending</h3>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100">
+            <CheckCircle2 size={22} />
+          </div>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Completed</span>
+            <h3 className="text-lg font-bold text-slate-900">{activeTasks.filter(t => t.status === 'Completed').length} Done</h3>
           </div>
         </div>
       </div>
 
-      <div className="emp-card" style={{ marginTop: '1.5rem' }}>
-        <div className="emp-card-header">
-          <h3>Assigned Work Items</h3>
+      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div className="border-b border-slate-200 px-6 py-4 bg-slate-50/50 font-semibold text-slate-900 text-sm">
+          Assigned Work Items
         </div>
-        <div className="emp-card-body">
-          <div className="task-list">
+        <div className="p-6">
+          <div className="space-y-3">
             {activeTasks.map((task) => (
-              <div key={task.id} className={`task-item ${task.status === 'Completed' ? 'completed' : ''}`}>
+              <div 
+                key={task.id} 
+                className={`flex items-start gap-3 rounded-xl border p-3.5 transition ${
+                  task.status === 'Completed' 
+                    ? 'border-slate-200 bg-slate-50 opacity-60' 
+                    : 'border-slate-200 bg-white hover:border-blue-300'
+                }`}
+              >
                 <input 
                   type="checkbox" 
                   checked={task.status === 'Completed'} 
                   onChange={() => toggleTaskStatus(task.id)}
-                  className="task-checkbox"
+                  className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                 />
-                <div className="task-details">
-                  <div className="task-title">{task.title}</div>
-                  <div className="task-meta">
-                    <span className={`priority-tag priority-${(task.priority || 'Medium').toLowerCase()}`}>
+                <div className="flex-1 space-y-1">
+                  <div className={`text-xs font-bold text-slate-900 ${task.status === 'Completed' ? 'line-through text-slate-400' : ''}`}>
+                    {task.title}
+                  </div>
+                  <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                    <span className={`font-semibold ${
+                      task.priority === 'High' ? 'text-red-600' : task.priority === 'Medium' ? 'text-amber-600' : 'text-slate-600'
+                    }`}>
                       {task.priority} Priority
                     </span>
                     <span>Category: {task.category || 'General'}</span>

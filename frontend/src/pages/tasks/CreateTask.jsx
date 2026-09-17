@@ -54,37 +54,36 @@ const CreateTask = () => {
   };
 
   return (
-    <div className="create-task-container" style={{ maxWidth: '800px', margin: '0 auto' }}>
+    <div className="p-6 max-w-4xl mx-auto space-y-6">
       <button 
         onClick={() => navigate(-1)} 
-        className="btn btn-secondary btn-sm"
-        style={{ marginBottom: '1rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 text-xs font-semibold transition-colors shadow-sm"
       >
         <ArrowLeft size={16} />
         <span>Back to Tasks</span>
       </button>
 
-      <div className="card" style={{ padding: '2rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid #e2e8f0' }}>
-          <div style={{ padding: '0.75rem', background: '#e0f2fe', borderRadius: '10px', color: '#0284c7' }}>
+      <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm space-y-6">
+        <div className="flex items-center gap-4 pb-6 border-b border-slate-100">
+          <div className="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center shrink-0">
             <CheckSquare size={24} />
           </div>
           <div>
-            <h1 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#0f172a', margin: 0 }}>Create New Task</h1>
-            <p style={{ fontSize: '0.875rem', color: '#64748b', margin: 0 }}>Assign deliverables to PostgreSQL employees</p>
+            <h1 className="text-xl font-bold text-slate-900">Create New Task</h1>
+            <p className="text-xs text-slate-500 mt-0.5">Assign deliverables to PostgreSQL employees</p>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
-          <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-            <label className="form-label" style={{ fontWeight: '600' }}>
-              Task Title <span style={{ color: '#ef4444' }}>*</span>
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+              Task Title <span className="text-rose-500">*</span>
             </label>
             <input 
               type="text" 
               name="title"
-              className="form-control" 
+              className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-slate-900 placeholder:text-slate-400 shadow-sm transition-all" 
               placeholder="e.g., Complete Q3 Code Review & PR Verification" 
               value={formData.title} 
               onChange={handleChange} 
@@ -93,13 +92,13 @@ const CreateTask = () => {
           </div>
 
           {/* Description */}
-          <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-            <label className="form-label" style={{ fontWeight: '600' }}>
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
               Description & Objectives
             </label>
             <textarea 
               name="description"
-              className="form-control" 
+              className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-slate-900 placeholder:text-slate-400 shadow-sm transition-all" 
               rows={4} 
               placeholder="Provide clear step-by-step guidelines, requirements, and deliverables for this task..." 
               value={formData.description} 
@@ -108,13 +107,13 @@ const CreateTask = () => {
           </div>
 
           {/* Assigned To - Dynamic Select from PostgreSQL DB */}
-          <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-            <label className="form-label" style={{ fontWeight: '600' }}>
-              Assign To Employee (PostgreSQL Staff Database) <span style={{ color: '#ef4444' }}>*</span>
+          <div>
+            <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+              Assign To Employee (PostgreSQL Staff Database) <span className="text-rose-500">*</span>
             </label>
             <select 
               name="assigned_to"
-              className="form-control" 
+              className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-slate-900 shadow-sm transition-all" 
               value={formData.assigned_to} 
               onChange={handleChange} 
               required
@@ -126,18 +125,18 @@ const CreateTask = () => {
                 </option>
               ))}
             </select>
-            <small style={{ color: '#64748b', display: 'block', marginTop: '0.25rem' }}>
+            <span className="text-xs text-slate-500 mt-1.5 block">
               Populated dynamically from all active staff stored in your PostgreSQL database.
-            </small>
+            </span>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {/* Priority */}
-            <div className="form-group">
-              <label className="form-label" style={{ fontWeight: '600' }}>Priority Level</label>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Priority Level</label>
               <select 
                 name="priority"
-                className="form-control" 
+                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 shadow-sm transition-all" 
                 value={formData.priority} 
                 onChange={handleChange}
               >
@@ -149,11 +148,11 @@ const CreateTask = () => {
             </div>
 
             {/* Initial Status */}
-            <div className="form-group">
-              <label className="form-label" style={{ fontWeight: '600' }}>Status</label>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Status</label>
               <select 
                 name="status"
-                className="form-control" 
+                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 shadow-sm transition-all" 
                 value={formData.status} 
                 onChange={handleChange}
               >
@@ -164,12 +163,12 @@ const CreateTask = () => {
             </div>
 
             {/* Due Date */}
-            <div className="form-group">
-              <label className="form-label" style={{ fontWeight: '600' }}>Due Date</label>
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1.5">Due Date</label>
               <input 
                 type="date" 
                 name="due_date"
-                className="form-control" 
+                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-slate-900 shadow-sm transition-all" 
                 value={formData.due_date} 
                 onChange={handleChange} 
                 required 
@@ -178,17 +177,17 @@ const CreateTask = () => {
           </div>
 
           {/* Form Actions */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0' }}>
+          <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-100">
             <button 
               type="button" 
               onClick={() => navigate(-1)} 
-              className="btn btn-secondary"
+              className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm font-medium transition-colors bg-white shadow-sm"
             >
               Cancel
             </button>
             <button 
               type="submit" 
-              className="btn btn-primary" 
+              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors shadow-sm disabled:opacity-50" 
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Creating Task...' : 'Create & Assign Task'}

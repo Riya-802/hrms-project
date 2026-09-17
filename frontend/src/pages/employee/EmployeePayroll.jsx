@@ -19,70 +19,77 @@ const EmployeePayroll = () => {
   };
 
   return (
-    <div className="employee-page-container">
-      <div className="emp-metrics-grid">
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-blue">
-            <DollarSign size={22} color="#2563eb" />
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+            <DollarSign size={22} className="text-blue-600" />
           </div>
-          <div className="metric-info">
-            <span className="metric-label">Annual Gross Package</span>
-            <h3 className="metric-value">{breakdown.formattedGrossAnnual}</h3>
-            <span className="metric-subtext">Base + Allowances</span>
-          </div>
-        </div>
-
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-green">
-            <DollarSign size={22} color="#10b981" />
-          </div>
-          <div className="metric-info">
-            <span className="metric-label">Monthly Take-Home (Net)</span>
-            <h3 className="metric-value">{breakdown.formattedNetPayable}</h3>
-            <span className="metric-subtext">Direct Deposit</span>
+          <div>
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Annual Gross Package</span>
+            <h3 className="text-2xl font-bold text-slate-900 mt-1">{breakdown.formattedGrossAnnual}</h3>
+            <span className="text-xs text-slate-500 mt-0.5 block">Base + Allowances</span>
           </div>
         </div>
 
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-amber">
-            <FileText size={22} color="#d97706" />
+        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <DollarSign size={22} className="text-emerald-500" />
           </div>
-          <div className="metric-info">
-            <span className="metric-label">Tax & Deductions</span>
-            <h3 className="metric-value">{breakdown.formattedTaxDeductions} / mo</h3>
-            <span className="metric-subtext">Standard Withholding</span>
+          <div>
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Monthly Take-Home (Net)</span>
+            <h3 className="text-2xl font-bold text-slate-900 mt-1">{breakdown.formattedNetPayable}</h3>
+            <span className="text-xs text-slate-500 mt-0.5 block">Direct Deposit</span>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+            <FileText size={22} className="text-amber-600" />
+          </div>
+          <div>
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block">Tax & Deductions</span>
+            <h3 className="text-2xl font-bold text-slate-900 mt-1">{breakdown.formattedTaxDeductions} / mo</h3>
+            <span className="text-xs text-slate-500 mt-0.5 block">Standard Withholding</span>
           </div>
         </div>
       </div>
 
-      <div className="emp-card" style={{ marginTop: '1.5rem' }}>
-        <div className="emp-card-header">
-          <h3>Monthly Payslips & Statements</h3>
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+          <h3 className="text-lg font-bold text-slate-900">Monthly Payslips & Statements</h3>
         </div>
-        <div className="emp-card-body">
-          <div className="table-responsive">
-            <table className="table">
+        <div className="p-6">
+          <div className="overflow-x-auto rounded-lg border border-slate-200">
+            <table className="w-full text-left border-collapse">
               <thead>
-                <tr>
-                  <th>Pay Period</th>
-                  <th>Payment Date</th>
-                  <th>Gross Salary</th>
-                  <th>Net Payable</th>
-                  <th>Status</th>
-                  <th>Action</th>
+                <tr className="bg-slate-50 border-b border-slate-200">
+                  <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pay Period</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Payment Date</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Gross Salary</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Net Payable</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-slate-100">
                 {payslips.map((ps, i) => (
-                  <tr key={i}>
-                    <td style={{ fontWeight: 600 }}>{ps.month}</td>
-                    <td>{ps.date}</td>
-                    <td>{ps.gross}</td>
-                    <td style={{ color: '#10b981', fontWeight: 600 }}>{ps.net}</td>
-                    <td><span className="badge badge-success">{ps.status}</span></td>
-                    <td>
-                      <button className="btn btn-outline" style={{ padding: '0.35rem 0.75rem', fontSize: '0.825rem' }} onClick={() => handleDownloadPayslip(ps.month)}>
-                        <Download size={14} style={{ marginRight: '0.3rem' }} /> PDF
+                  <tr key={i} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-6 py-4 text-sm font-semibold text-slate-900 whitespace-nowrap">{ps.month}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600 whitespace-nowrap">{ps.date}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600 whitespace-nowrap">{ps.gross}</td>
+                    <td className="px-6 py-4 text-sm font-semibold text-emerald-600 whitespace-nowrap">{ps.net}</td>
+                    <td className="px-6 py-4 text-sm whitespace-nowrap">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                        {ps.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm whitespace-nowrap">
+                      <button 
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-300 text-slate-700 bg-white hover:bg-slate-50 transition-colors"
+                        onClick={() => handleDownloadPayslip(ps.month)}
+                      >
+                        <Download size={14} /> PDF
                       </button>
                     </td>
                   </tr>

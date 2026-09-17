@@ -36,95 +36,104 @@ const EmployeeLeaves = () => {
   };
 
   return (
-    <div className="employee-page-container">
-      <div className="emp-metrics-grid">
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-blue">
-            <Calendar size={22} color="#2563eb" />
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
+            <Calendar size={22} />
           </div>
-          <div className="metric-info">
-            <span className="metric-label">Casual Leave Balance</span>
-            <h3 className="metric-value">8 / 12 Days</h3>
-            <span className="metric-subtext">4 Days Used</span>
-          </div>
-        </div>
-
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-green">
-            <Calendar size={22} color="#10b981" />
-          </div>
-          <div className="metric-info">
-            <span className="metric-label">Sick Leave Balance</span>
-            <h3 className="metric-value">5 / 7 Days</h3>
-            <span className="metric-subtext">2 Days Used</span>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Casual Leave Balance</span>
+            <h3 className="text-lg font-bold text-slate-900">8 / 12 Days</h3>
+            <span className="text-[11px] text-slate-400">4 Days Used</span>
           </div>
         </div>
 
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-purple">
-            <Calendar size={22} color="#8b5cf6" />
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100">
+            <Calendar size={22} />
           </div>
-          <div className="metric-info">
-            <span className="metric-label">Annual Vacation Leave</span>
-            <h3 className="metric-value">14 / 15 Days</h3>
-            <span className="metric-subtext">1 Day Used</span>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Sick Leave Balance</span>
+            <h3 className="text-lg font-bold text-slate-900">5 / 7 Days</h3>
+            <span className="text-[11px] text-slate-400">2 Days Used</span>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
+            <Calendar size={22} />
+          </div>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Annual Vacation Leave</span>
+            <h3 className="text-lg font-bold text-slate-900">14 / 15 Days</h3>
+            <span className="text-[11px] text-slate-400">1 Day Used</span>
           </div>
         </div>
       </div>
 
-      <div className="emp-card" style={{ marginTop: '1.5rem' }}>
-        <div className="emp-card-header">
-          <h3>My Leave Applications & History</h3>
-          <button className="btn btn-primary" onClick={() => setShowApplyModal(true)}>
+      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 bg-slate-50/50">
+          <h3 className="font-semibold text-slate-900 text-sm">My Leave Applications & History</h3>
+          <button 
+            className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-blue-700 transition cursor-pointer" 
+            onClick={() => setShowApplyModal(true)}
+          >
             <Plus size={16} />
-            <span style={{ marginLeft: '0.4rem' }}>Apply for Leave</span>
+            <span>Apply for Leave</span>
           </button>
         </div>
-        <div className="emp-card-body">
-          <div className="table-responsive">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Leave Type</th>
-                  <th>Dates Requested</th>
-                  <th>Duration</th>
-                  <th>Reason</th>
-                  <th>Status</th>
+        <div className="w-full overflow-x-auto">
+          <table className="w-full text-left text-sm border-collapse">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                <th className="px-6 py-3.5">Leave Type</th>
+                <th className="px-6 py-3.5">Dates Requested</th>
+                <th className="px-6 py-3.5">Duration</th>
+                <th className="px-6 py-3.5">Reason</th>
+                <th className="px-6 py-3.5">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {myLeaveHistory.map((item) => (
+                <tr key={item.id} className="hover:bg-slate-50/70 transition-colors">
+                  <td className="px-6 py-3.5 font-semibold text-slate-900">{item.type}</td>
+                  <td className="px-6 py-3.5 text-slate-600">{item.dates}</td>
+                  <td className="px-6 py-3.5 text-slate-600">{item.days} Day(s)</td>
+                  <td className="px-6 py-3.5 text-slate-600 max-w-[280px]">{item.reason}</td>
+                  <td className="px-6 py-3.5">
+                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                      item.status === 'Approved' 
+                        ? 'bg-emerald-100 text-emerald-800' 
+                        : item.status === 'Pending' 
+                        ? 'bg-amber-100 text-amber-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {item.status}
+                    </span>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {myLeaveHistory.map((item) => (
-                  <tr key={item.id}>
-                    <td style={{ fontWeight: 600 }}>{item.type}</td>
-                    <td>{item.dates}</td>
-                    <td>{item.days} Day(s)</td>
-                    <td>{item.reason}</td>
-                    <td>
-                      <span className={`badge ${
-                        item.status === 'Approved' ? 'badge-success' : item.status === 'Pending' ? 'badge-warning' : 'badge-danger'
-                      }`}>
-                        {item.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
       {showApplyModal && (
-        <div className="modal-overlay" onClick={() => setShowApplyModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '450px' }}>
-            <div className="modal-header">
-              <h3>Apply for Leave</h3>
-              <button className="toast-close" onClick={() => setShowApplyModal(false)}>✕</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs" onClick={() => setShowApplyModal(false)}>
+          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 bg-slate-50">
+              <h3 className="text-sm font-bold text-slate-900">Apply for Leave</h3>
+              <button className="rounded-lg p-1 text-slate-400 hover:text-slate-600 transition cursor-pointer" onClick={() => setShowApplyModal(false)}>✕</button>
             </div>
-            <form onSubmit={handleApplyLeave} style={{ padding: '1.25rem' }}>
-              <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label">Leave Category</label>
-                <select className="form-control" value={leaveType} onChange={(e) => setLeaveType(e.target.value)}>
+            <form onSubmit={handleApplyLeave} className="p-6 space-y-4">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-700">Leave Category</label>
+                <select 
+                  className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 bg-white" 
+                  value={leaveType} 
+                  onChange={(e) => setLeaveType(e.target.value)}
+                >
                   <option value="Casual Leave">Casual Leave</option>
                   <option value="Sick Leave">Sick Leave</option>
                   <option value="Annual Leave">Annual Leave</option>
@@ -132,25 +141,25 @@ const EmployeeLeaves = () => {
                 </select>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                <div className="form-group">
-                  <label className="form-label">Start Date</label>
-                  <input type="date" className="form-control" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-slate-700">Start Date</label>
+                  <input type="date" className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
                 </div>
-                <div className="form-group">
-                  <label className="form-label">End Date</label>
-                  <input type="date" className="form-control" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-semibold text-slate-700">End Date</label>
+                  <input type="date" className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
                 </div>
               </div>
 
-              <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-                <label className="form-label">Reason for Request</label>
-                <textarea className="form-control" rows={3} placeholder="Explain reason for leave..." value={reason} onChange={(e) => setReason(e.target.value)} />
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-semibold text-slate-700">Reason for Request</label>
+                <textarea className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm text-slate-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20" rows={3} placeholder="Explain reason for leave..." value={reason} onChange={(e) => setReason(e.target.value)} />
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
-                <button type="button" className="btn btn-outline" onClick={() => setShowApplyModal(false)}>Cancel</button>
-                <button type="submit" className="btn btn-primary">Submit Application</button>
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button type="button" className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition cursor-pointer" onClick={() => setShowApplyModal(false)}>Cancel</button>
+                <button type="submit" className="rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700 transition cursor-pointer">Submit Application</button>
               </div>
             </form>
           </div>

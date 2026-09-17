@@ -40,11 +40,11 @@ const AdminLayout = () => {
   const { dashboardTheme } = useHRMS();
 
   return (
-    <div className={`app-layout dashboard-theme-${dashboardTheme}`}>
+    <div className={`flex min-h-screen w-full overflow-x-hidden ${dashboardTheme === 'dark' ? 'bg-slate-900 text-slate-100' : 'bg-slate-100 text-slate-900'} transition-colors duration-200`}>
       <Sidebar portalType="admin" />
-      <div className="main-wrapper">
+      <div className="flex-1 flex flex-col min-w-0">
         <Navbar title={title} subtitle={subtitle} />
-        <main className="page-content">
+        <main className="p-4 sm:p-6 lg:p-8 flex-1 max-w-7xl w-full mx-auto">
           <Outlet />
         </main>
       </div>

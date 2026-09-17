@@ -57,20 +57,29 @@ const EmployeeDetails = () => {
   const salaryDetails = getSalaryBreakdown(employee.salary);
 
   return (
-    <div>
+    <div className="space-y-6">
       {/* Top Controls */}
-      <div className="page-header">
-        <button className="btn btn-secondary" onClick={() => navigate('/admin/employees')}>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <button 
+          className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-xs" 
+          onClick={() => navigate('/admin/employees')}
+        >
           <ArrowLeft size={16} />
           <span>Back to Employees</span>
         </button>
 
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <button className="btn btn-secondary" onClick={() => navigate(`/admin/employees/${employee.id}/edit`)}>
+        <div className="flex items-center gap-3">
+          <button 
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-xs" 
+            onClick={() => navigate(`/admin/employees/${employee.id}/edit`)}
+          >
             <Edit3 size={16} />
             <span>Edit Employee</span>
           </button>
-          <button className="btn btn-danger" onClick={handleDelete}>
+          <button 
+            className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-red-700 transition cursor-pointer shadow-xs" 
+            onClick={handleDelete}
+          >
             <Trash2 size={16} />
             <span>Delete Employee</span>
           </button>
@@ -78,180 +87,160 @@ const EmployeeDetails = () => {
       </div>
 
       {/* Main Profile Card */}
-      <div className="profile-card" style={{ marginBottom: '2rem' }}>
-        <div className="profile-banner" />
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div className="h-32 bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900" />
         
-        <div className="profile-header-content">
-          <div className="profile-avatar-wrapper">
+        <div className="-mt-12 flex flex-wrap items-end justify-between gap-4 px-6 pb-6 border-b border-slate-200">
+          <div className="flex flex-wrap items-end gap-5">
             <img 
               src={employee.profilePhoto} 
               alt={employee.fullName} 
-              className="profile-avatar"
+              className="h-24 w-24 rounded-full border-4 border-white object-cover shadow-lg bg-white"
               onError={(e) => {
                 e.target.src = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=256';
               }}
             />
-            <div className="profile-title-text">
-              <h3>{employee.fullName}</h3>
-              <p>{employee.designation} &bull; {employee.department}</p>
+            <div className="mb-1 space-y-0.5">
+              <h3 className="text-xl font-bold text-slate-900">{employee.fullName}</h3>
+              <p className="text-sm font-medium text-slate-500">{employee.designation} &bull; {employee.department}</p>
             </div>
           </div>
 
-          <div>
+          <div className="mb-2">
             <StatusBadge status={employee.status} />
           </div>
         </div>
 
         {/* Detailed Grid Info */}
-        <div className="info-grid">
-          <div className="info-item">
-            <div className="info-label">
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <Briefcase size={14} /> Employee ID
-              </span>
+        <div className="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="space-y-1">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Briefcase size={14} /> Employee ID
             </div>
-            <div className="info-value">{employee.employeeId || employee.employee_id || employee.id}</div>
+            <div className="text-sm font-bold text-slate-900">{employee.employeeId || employee.employee_id || employee.id}</div>
           </div>
 
-          <div className="info-item">
-            <div className="info-label">
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <Mail size={14} /> Email Address
-              </span>
+          <div className="space-y-1">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Mail size={14} /> Email Address
             </div>
-            <div className="info-value">{employee.email}</div>
+            <div className="text-sm font-bold text-slate-900">{employee.email}</div>
           </div>
 
-          <div className="info-item">
-            <div className="info-label">
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <Phone size={14} /> Phone Number
-              </span>
+          <div className="space-y-1">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Phone size={14} /> Phone Number
             </div>
-            <div className="info-value">{employee.phone}</div>
+            <div className="text-sm font-bold text-slate-900">{employee.phone}</div>
           </div>
 
-          <div className="info-item">
-            <div className="info-label">
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <Calendar size={14} /> Date of Birth
-              </span>
+          <div className="space-y-1">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Calendar size={14} /> Date of Birth
             </div>
-            <div className="info-value">
+            <div className="text-sm font-bold text-slate-900">
               {employee.dob && employee.dob !== 'N/A' 
                 ? String(employee.dob).split('T')[0] 
                 : (employee.date_of_birth ? String(employee.date_of_birth).split('T')[0] : 'N/A')}
             </div>
           </div>
 
-          <div className="info-item">
-            <div className="info-label">
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <UserCheck size={14} /> Gender
-              </span>
+          <div className="space-y-1">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+              <UserCheck size={14} /> Gender
             </div>
-            <div className="info-value">{employee.gender || 'N/A'}</div>
+            <div className="text-sm font-bold text-slate-900">{employee.gender || 'N/A'}</div>
           </div>
 
-          <div className="info-item">
-            <div className="info-label">
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <Building2 size={14} /> Department
-              </span>
+          <div className="space-y-1">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Building2 size={14} /> Department
             </div>
-            <div className="info-value">{employee.department}</div>
+            <div className="text-sm font-bold text-slate-900">{employee.department}</div>
           </div>
 
-          <div className="info-item">
-            <div className="info-label">
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <Calendar size={14} /> Joining Date
-              </span>
+          <div className="space-y-1">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Calendar size={14} /> Joining Date
             </div>
-            <div className="info-value">{employee.joiningDate}</div>
+            <div className="text-sm font-bold text-slate-900">{employee.joiningDate}</div>
           </div>
 
-          <div className="info-item">
-            <div className="info-label">
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <Briefcase size={14} /> Employment Type
-              </span>
+          <div className="space-y-1">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Briefcase size={14} /> Employment Type
             </div>
-            <div className="info-value">{employee.employmentType}</div>
+            <div className="text-sm font-bold text-slate-900">{employee.employmentType}</div>
           </div>
 
-          <div className="info-item" style={{ gridColumn: '1 / -1' }}>
-            <div className="info-label">
-              <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <MapPin size={14} /> Residential Address
-              </span>
+          <div className="col-span-full space-y-1 pt-2 border-t border-slate-100">
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+              <MapPin size={14} /> Residential Address
             </div>
-            <div className="info-value">{employee.address || 'No address provided'}</div>
+            <div className="text-sm text-slate-800">{employee.address || 'No address provided'}</div>
           </div>
         </div>
       </div>
 
       {/* Salary & Financial Compensation Details Card */}
-      <div className="card">
-        <div className="card-header">
-          <div className="card-header-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <DollarSign size={20} color="#10b981" />
-            <span>Salary & Compensation Breakdown</span>
-          </div>
+      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div className="border-b border-slate-200 px-6 py-4 bg-slate-50/50 flex items-center gap-2 font-semibold text-slate-900 text-sm">
+          <DollarSign size={20} className="text-emerald-600" />
+          <span>Salary & Compensation Breakdown</span>
         </div>
-        <div className="card-body">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
-            <div style={{ padding: '1.2rem', backgroundColor: '#ecfdf5', borderRadius: 'var(--radius-md)', border: '1px solid #a7f3d0' }}>
-              <div style={{ fontSize: '0.78rem', color: '#047857', fontWeight: '700', textTransform: 'uppercase' }}>
+        <div className="p-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50/70 p-4">
+              <div className="text-xs font-bold uppercase tracking-wider text-emerald-700">
                 Annual Gross Salary
               </div>
-              <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#065f46', marginTop: '0.3rem' }}>
+              <div className="mt-1 text-2xl font-extrabold text-emerald-900">
                 {salaryDetails.formattedGrossAnnual}
               </div>
-              <div style={{ fontSize: '0.78rem', color: '#047857', marginTop: '0.2rem' }}>
+              <div className="mt-1 text-xs text-emerald-700">
                 Agreed base annual package
               </div>
             </div>
 
-            <div style={{ padding: '1.2rem', backgroundColor: '#eff6ff', borderRadius: 'var(--radius-md)', border: '1px solid #bfdbfe' }}>
-              <div style={{ fontSize: '0.78rem', color: '#1e40af', fontWeight: '700', textTransform: 'uppercase' }}>
+            <div className="rounded-xl border border-blue-200 bg-blue-50/70 p-4">
+              <div className="text-xs font-bold uppercase tracking-wider text-blue-700">
                 Monthly Net Payable
               </div>
-              <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#1e3a8a', marginTop: '0.3rem' }}>
-                {salaryDetails.formattedNetPayable} <span style={{ fontSize: '0.8rem', fontWeight: '500' }}>/ mo</span>
+              <div className="mt-1 text-2xl font-extrabold text-blue-900">
+                {salaryDetails.formattedNetPayable} <span className="text-xs font-normal">/ mo</span>
               </div>
-              <div style={{ fontSize: '0.78rem', color: '#1e40af', marginTop: '0.2rem' }}>
+              <div className="mt-1 text-xs text-blue-700">
                 Estimated direct deposit amount
               </div>
             </div>
 
-            <div style={{ padding: '1.2rem', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase' }}>
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
                 Base Component (70%)
               </div>
-              <div style={{ fontSize: '1.3rem', fontWeight: '700', color: 'var(--text-main)', marginTop: '0.3rem' }}>
-                {salaryDetails.formattedBaseSalary} <span style={{ fontSize: '0.75rem', fontWeight: '500' }}>/ mo</span>
+              <div className="mt-1 text-xl font-bold text-slate-900">
+                {salaryDetails.formattedBaseSalary} <span className="text-xs font-normal text-slate-500">/ mo</span>
               </div>
             </div>
 
-            <div style={{ padding: '1.2rem', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase' }}>
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-500">
                 Allowances & Perks (20%)
               </div>
-              <div style={{ fontSize: '1.3rem', fontWeight: '700', color: 'var(--text-main)', marginTop: '0.3rem' }}>
-                {salaryDetails.formattedAllowances} <span style={{ fontSize: '0.75rem', fontWeight: '500' }}>/ mo</span>
+              <div className="mt-1 text-xl font-bold text-slate-900">
+                {salaryDetails.formattedAllowances} <span className="text-xs font-normal text-slate-500">/ mo</span>
               </div>
             </div>
           </div>
 
-          <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <CreditCard size={20} color="var(--accent)" />
-              <span style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-main)' }}>
-                Payroll Payment Method: <strong>Direct Bank Transfer</strong>
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-slate-200 pt-5 text-sm">
+            <div className="flex items-center gap-2 text-slate-800 font-medium">
+              <CreditCard size={20} className="text-blue-600" />
+              <span>
+                Payroll Payment Method: <strong className="text-slate-900">Direct Bank Transfer</strong>
               </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#10b981', fontSize: '0.85rem', fontWeight: '600' }}>
+            <div className="flex items-center gap-1.5 text-emerald-600 text-xs font-semibold">
               <ShieldCheck size={18} />
               <span>Payroll Active & Verified</span>
             </div>

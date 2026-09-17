@@ -28,79 +28,84 @@ const EmployeeAttendance = () => {
   };
 
   return (
-    <div className="employee-page-container">
-      <div className="emp-metrics-grid">
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-blue">
-            <Clock size={22} color="#2563eb" />
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
+            <Clock size={22} />
           </div>
-          <div className="metric-info">
-            <span className="metric-label">Status Today</span>
-            <h3 className="metric-value">{isCheckedIn ? 'Checked In' : 'Checked Out'}</h3>
-            <span className="metric-subtext">Check in time: {checkInTime}</span>
-          </div>
-        </div>
-
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-green">
-            <CheckCircle2 size={22} color="#10b981" />
-          </div>
-          <div className="metric-info">
-            <span className="metric-label">Monthly On-Time Rate</span>
-            <h3 className="metric-value">98.5%</h3>
-            <span className="metric-subtext">21 Days Present out of 22</span>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Status Today</span>
+            <h3 className="text-lg font-bold text-slate-900">{isCheckedIn ? 'Checked In' : 'Checked Out'}</h3>
+            <span className="text-[11px] text-slate-400">Check in time: {checkInTime}</span>
           </div>
         </div>
 
-        <div className="emp-metric-card">
-          <div className="metric-icon-box bg-purple">
-            <Calendar size={22} color="#8b5cf6" />
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100">
+            <CheckCircle2 size={22} />
           </div>
-          <div className="metric-info">
-            <span className="metric-label">Average Working Hours</span>
-            <h3 className="metric-value">8h 24m</h3>
-            <span className="metric-subtext">Target: 8h 00m per day</span>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Monthly On-Time Rate</span>
+            <h3 className="text-lg font-bold text-slate-900">98.5%</h3>
+            <span className="text-[11px] text-slate-400">21 Days Present out of 22</span>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
+            <Calendar size={22} />
+          </div>
+          <div>
+            <span className="text-xs font-medium text-slate-500">Average Working Hours</span>
+            <h3 className="text-lg font-bold text-slate-900">8h 24m</h3>
+            <span className="text-[11px] text-slate-400">Target: 8h 00m per day</span>
           </div>
         </div>
       </div>
 
-      <div className="emp-card" style={{ marginTop: '1.5rem' }}>
-        <div className="emp-card-header">
-          <h3>Daily Attendance History</h3>
-          <button className={`btn ${isCheckedIn ? 'btn-danger' : 'btn-primary'}`} onClick={handleToggle}>
+      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 bg-slate-50/50">
+          <h3 className="font-semibold text-slate-900 text-sm">Daily Attendance History</h3>
+          <button 
+            className={`inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold shadow-xs transition cursor-pointer ${
+              isCheckedIn ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`} 
+            onClick={handleToggle}
+          >
             {isCheckedIn ? <Square size={16} /> : <Play size={16} />}
-            <span style={{ marginLeft: '0.4rem' }}>{isCheckedIn ? 'Check Out' : 'Check In'}</span>
+            <span>{isCheckedIn ? 'Check Out' : 'Check In'}</span>
           </button>
         </div>
-        <div className="emp-card-body">
-          <div className="table-responsive">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Check In</th>
-                  <th>Check Out</th>
-                  <th>Total Hours</th>
-                  <th>Status</th>
+        <div className="w-full overflow-x-auto">
+          <table className="w-full text-left text-sm border-collapse">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                <th className="px-6 py-3.5">Date</th>
+                <th className="px-6 py-3.5">Check In</th>
+                <th className="px-6 py-3.5">Check Out</th>
+                <th className="px-6 py-3.5">Total Hours</th>
+                <th className="px-6 py-3.5">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {attendanceLog.map((row, idx) => (
+                <tr key={idx} className="hover:bg-slate-50/70 transition-colors">
+                  <td className="px-6 py-3.5 font-semibold text-slate-900">{row.date}</td>
+                  <td className="px-6 py-3.5 text-slate-600">{row.checkIn}</td>
+                  <td className="px-6 py-3.5 text-slate-600">{row.checkOut}</td>
+                  <td className="px-6 py-3.5 text-slate-600">{row.totalHours}</td>
+                  <td className="px-6 py-3.5">
+                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                      row.status === 'Present' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'
+                    }`}>
+                      {row.status}
+                    </span>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {attendanceLog.map((row, idx) => (
-                  <tr key={idx}>
-                    <td style={{ fontWeight: 600 }}>{row.date}</td>
-                    <td>{row.checkIn}</td>
-                    <td>{row.checkOut}</td>
-                    <td>{row.totalHours}</td>
-                    <td>
-                      <span className={`badge ${row.status === 'Present' ? 'badge-success' : 'badge-neutral'}`}>
-                        {row.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

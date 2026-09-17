@@ -84,28 +84,28 @@ const TaskList = ({ filterMode = 'all' }) => {
   const getPriorityBadge = (priority) => {
     switch (priority) {
       case 'Urgent':
-        return <span className="status-badge status-inactive">🔥 Urgent</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200">🔥 Urgent</span>;
       case 'High':
-        return <span className="status-badge status-on-leave">⚡ High</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">⚡ High</span>;
       case 'Medium':
-        return <span className="status-badge status-active">Medium</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-200">Medium</span>;
       case 'Low':
-        return <span className="status-badge status-secondary">Low</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">Low</span>;
       default:
-        return <span className="status-badge status-secondary">{priority}</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">{priority}</span>;
     }
   };
 
   const getStatusBadge = (status) => {
     switch (status) {
       case 'Completed':
-        return <span className="status-badge status-active">✓ Completed</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">✓ Completed</span>;
       case 'In Progress':
-        return <span className="status-badge status-on-leave">⏳ In Progress</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">⏳ In Progress</span>;
       case 'Pending':
-        return <span className="status-badge status-inactive">⭕ Pending</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200">⭕ Pending</span>;
       default:
-        return <span className="status-badge status-secondary">{status}</span>;
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">{status}</span>;
     }
   };
 
@@ -120,24 +120,23 @@ const TaskList = ({ filterMode = 'all' }) => {
   };
 
   return (
-    <div className="task-page-container">
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
       {/* Page Header */}
-      <div className="page-header" style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="page-title">{getPageTitle()}</h1>
-          <p className="page-subtitle">Track, assign, and manage enterprise workforce deliverables</p>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{getPageTitle()}</h1>
+          <p className="text-sm text-slate-500 mt-1">Track, assign, and manage enterprise workforce deliverables</p>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
+        <div className="flex items-center gap-3">
           <Link 
             to={isAdmin ? '/admin/tasks/reports' : '/employee/tasks/reports'} 
-            className="btn btn-secondary"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 text-sm font-medium transition-colors shadow-sm"
           >
             Task Reports
           </Link>
           <Link 
             to={isAdmin ? '/admin/tasks/create' : '/employee/tasks/create'} 
-            className="btn btn-primary"
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors shadow-sm"
           >
             <Plus size={18} />
             <span>Create Task</span>
@@ -146,7 +145,7 @@ const TaskList = ({ filterMode = 'all' }) => {
       </div>
 
       {/* Summary KPI Cards */}
-      <div className="stats-grid" style={{ marginBottom: '1.5rem' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard title="Total Tasks" value={totalCount} icon={CheckSquare} color="primary" />
         <StatCard title="Pending" value={pendingCount} icon={Clock} color="warning" />
         <StatCard title="In Progress" value={inProgressCount} icon={AlertCircle} color="info" />
@@ -154,26 +153,24 @@ const TaskList = ({ filterMode = 'all' }) => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="card" style={{ marginBottom: '1.5rem', padding: '1rem' }}>
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ position: 'relative', minWidth: '280px', flex: 1 }}>
-            <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="relative w-full md:flex-1">
+            <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input 
               type="text" 
-              className="form-control" 
+              className="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-slate-900 placeholder:text-slate-400" 
               placeholder="Search by title, description, or staff..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ paddingLeft: '2.5rem' }}
             />
           </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
             <select 
-              className="form-control" 
+              className="px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 w-full sm:w-auto" 
               value={selectedStatus} 
               onChange={(e) => setSelectedStatus(e.target.value)}
-              style={{ minWidth: '150px' }}
             >
               <option value="ALL">All Statuses</option>
               <option value="Pending">Pending</option>
@@ -182,10 +179,9 @@ const TaskList = ({ filterMode = 'all' }) => {
             </select>
 
             <select 
-              className="form-control" 
+              className="px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 w-full sm:w-auto" 
               value={selectedPriority} 
               onChange={(e) => setSelectedPriority(e.target.value)}
-              style={{ minWidth: '150px' }}
             >
               <option value="ALL">All Priorities</option>
               <option value="Urgent">Urgent</option>
@@ -199,98 +195,99 @@ const TaskList = ({ filterMode = 'all' }) => {
 
       {/* Task List Grid / Cards */}
       {isLoading ? (
-        <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
-          <p>Loading PostgreSQL tasks...</p>
+        <div className="bg-white rounded-xl border border-slate-200 p-12 text-center shadow-sm">
+          <p className="text-slate-600 font-medium">Loading PostgreSQL tasks...</p>
         </div>
       ) : filteredTasks.length === 0 ? (
-        <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
-          <CheckSquare size={48} style={{ margin: '0 auto 1rem', color: '#94a3b8' }} />
-          <h3>No tasks found</h3>
-          <p style={{ color: '#64748b' }}>No tasks matching your current filters. Try changing filters or create a new task.</p>
+        <div className="bg-white rounded-xl border border-slate-200 p-12 text-center shadow-sm">
+          <CheckSquare size={48} className="mx-auto mb-4 text-slate-400" />
+          <h3 className="text-lg font-bold text-slate-900">No tasks found</h3>
+          <p className="text-sm text-slate-500 mt-1">No tasks matching your current filters. Try changing filters or create a new task.</p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1.25rem' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTasks.map(task => (
-            <div key={task.id} className="card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '1.25rem' }}>
+            <div key={task.id} className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4">
               <div>
                 {/* Header: ID, Priority, Status */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                  <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#0ea5e9', letterSpacing: '0.5px' }}>{task.taskId}</span>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className="text-xs font-bold text-sky-600 tracking-wider">{task.taskId}</span>
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     {getPriorityBadge(task.priority)}
                     {getStatusBadge(task.status)}
                   </div>
                 </div>
 
                 {/* Title */}
-                <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: '0.5rem', color: '#0f172a' }}>
+                <h3 className="text-base font-bold text-slate-900 mb-2 line-clamp-2">
                   {task.title}
                 </h3>
 
                 {/* Description */}
-                <p style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '1.25rem', lineHeight: '1.5', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                <p className="text-sm text-slate-600 line-clamp-3 leading-relaxed mb-4">
                   {task.description || 'No detailed description provided.'}
                 </p>
               </div>
 
-              <div>
+              <div className="space-y-4 pt-4 border-t border-slate-100">
                 {/* Assignee & Due Date Meta */}
-                <div style={{ padding: '0.75rem', background: '#f8fafc', borderRadius: '8px', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div className="p-3 bg-slate-50 rounded-lg flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
                     <img 
                       src={task.assignedToPhoto || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256'} 
                       alt={task.assignedToName} 
-                      style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }}
+                      className="w-9 h-9 rounded-full object-cover shrink-0"
                     />
-                    <div>
-                      <div style={{ fontSize: '0.875rem', fontWeight: '600', color: '#334155' }}>{task.assignedToName}</div>
-                      <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{task.assignedToDesignation || task.assignedToEmpId}</div>
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold text-slate-800 truncate">{task.assignedToName}</div>
+                      <div className="text-[11px] text-slate-500 truncate">{task.assignedToDesignation || task.assignedToEmpId}</div>
                     </div>
                   </div>
 
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '0.25rem', justifyContent: 'flex-end' }}>
-                      <Calendar size={13} />
-                      <span>Due Date</span>
+                  <div className="text-right shrink-0">
+                    <div className="text-[11px] text-slate-400 flex items-center justify-end gap-1">
+                      <Calendar size={12} />
+                      <span>Due</span>
                     </div>
-                    <div style={{ fontSize: '0.85rem', fontWeight: '600', color: '#475569' }}>{task.dueDate}</div>
+                    <div className="text-xs font-semibold text-slate-700">{task.dueDate}</div>
                   </div>
                 </div>
 
                 {/* Card Actions */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.5rem', borderTop: '1px solid #f1f5f9' }}>
+                <div className="flex items-center justify-between gap-2">
                   <button 
                     onClick={() => toggleTaskStatus(task.id)} 
-                    className={`btn btn-sm ${task.status === 'Completed' ? 'btn-secondary' : 'btn-primary'}`}
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                      task.status === 'Completed' 
+                        ? 'border border-slate-300 text-slate-700 bg-white hover:bg-slate-50' 
+                        : 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm'
+                    }`}
                   >
                     {task.status === 'Completed' ? (
                       <>
-                        <Clock size={15} />
-                        <span>Reopen Task</span>
+                        <Clock size={14} />
+                        <span>Reopen</span>
                       </>
                     ) : task.status === 'In Progress' ? (
                       <>
-                        <CheckCircle2 size={15} />
-                        <span>Complete Task</span>
+                        <CheckCircle2 size={14} />
+                        <span>Complete</span>
                       </>
                     ) : (
                       <>
-                        <PlayCircle size={15} />
-                        <span>Start Progress</span>
+                        <PlayCircle size={14} />
+                        <span>Start Task</span>
                       </>
                     )}
                   </button>
 
-                  <div style={{ display: 'flex', gap: '0.4rem' }}>
-                    <button 
-                      className="btn btn-sm btn-outline-danger" 
-                      onClick={() => handleDeleteTask(task)}
-                      title="Delete Task"
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  </div>
+                  <button 
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" 
+                    onClick={() => handleDeleteTask(task)}
+                    title="Delete Task"
+                  >
+                    <Trash2 size={16} />
+                  </button>
                 </div>
               </div>
             </div>

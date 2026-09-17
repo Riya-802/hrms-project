@@ -71,59 +71,74 @@ const Navbar = ({ title, subtitle }) => {
   };
 
   return (
-    <header className="navbar">
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+    <header className={`h-16 sm:h-18 sticky top-0 z-40 flex items-center justify-between px-3 sm:px-6 lg:px-8 border-b transition-colors duration-200 backdrop-blur-md ${
+      dashboardTheme === 'dark' ? 'bg-slate-900/90 border-slate-800 text-white' : 'bg-white/90 border-slate-200 text-slate-900'
+    }`}>
+      <div className="flex items-center gap-3 min-w-0">
         {/* Mobile Hamburger Toggle Button */}
         <button 
-          className="btn-icon mobile-menu-toggle" 
+          className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition" 
           onClick={toggleMobileSidebar}
           title="Toggle Navigation Menu"
         >
           <Menu size={22} />
         </button>
 
-        <div className="navbar-title-group">
-          <h1>{displayTitle}</h1>
-          <p className="navbar-subtitle-text">{displaySubtitle}</p>
+        <div className="min-w-0">
+          <h1 className="text-sm sm:text-base lg:text-lg font-extrabold truncate tracking-tight text-slate-900 dark:text-white">
+            {displayTitle}
+          </h1>
+          <p className="hidden sm:block text-xs text-slate-500 truncate mt-0.5">
+            {displaySubtitle}
+          </p>
         </div>
       </div>
 
-      <div className="navbar-actions">
-        {/* Search Bar with ⌘K Badge */}
-        <div className="navbar-search">
-          <Search className="navbar-search-icon" />
+      <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+        {/* Search Bar */}
+        <div className="hidden md:flex relative items-center w-44 lg:w-64">
+          <Search size={16} className="absolute left-3 text-slate-400 pointer-events-none" />
           <input 
             type="text" 
             placeholder={t('searchKeyword')} 
             onClick={() => addToast('Global Search shortcut activated (Ctrl+K / ⌘K)', 'info')}
+            className="w-full pl-9 pr-8 py-1.5 text-xs font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 transition"
           />
-          <span className="navbar-search-shortcut">⌘</span>
+          <span className="absolute right-2.5 text-[10px] font-bold text-slate-400 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-1.5 py-0.5 rounded shadow-xs pointer-events-none">
+            ⌘
+          </span>
         </div>
 
-        {/* Toolbar Icons Matching Reference Header */}
-        <div className="navbar-toolbar">
-          {/* Multi-Language Dropdown Toggle */}
-          <div className="lang-dropdown-wrapper" style={{ position: 'relative' }}>
+        {/* Toolbar Icons */}
+        <div className="flex items-center gap-1 sm:gap-1.5">
+          {/* Multi-Language Dropdown */}
+          <div className="relative">
             <button 
-              className="navbar-tool-btn lang-btn" 
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" 
               onClick={() => setIsLangOpen(!isLangOpen)}
               title={t('selectLanguage')}
             >
-              <span className="flag-icon">{selectedLang.flag}</span>
+              <span className="text-base leading-none">{selectedLang.flag}</span>
             </button>
 
             {isLangOpen && (
-              <div className="lang-menu">
-                <div className="lang-menu-header">{t('selectLanguage')}</div>
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl z-50 py-1 overflow-hidden animate-in fade-in duration-150">
+                <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3.5 py-2 border-b border-slate-100 dark:border-slate-700">
+                  {t('selectLanguage')}
+                </div>
                 {languages.map((lang) => (
-                  <div 
+                  <button 
                     key={lang.code}
-                    className={`lang-option ${selectedLang.code === lang.code ? 'active' : ''}`}
+                    className={`w-full flex items-center gap-2.5 px-3.5 py-2 text-xs font-semibold text-left transition ${
+                      selectedLang.code === lang.code 
+                        ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-bold' 
+                        : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50'
+                    }`}
                     onClick={() => handleLanguageChange(lang)}
                   >
-                    <span className="flag-icon">{lang.flag}</span>
+                    <span className="text-sm">{lang.flag}</span>
                     <span>{lang.name}</span>
-                  </div>
+                  </button>
                 ))}
               </div>
             )}
@@ -131,36 +146,34 @@ const Navbar = ({ title, subtitle }) => {
 
           {/* Fullscreen Toggle */}
           <button 
-            className="navbar-tool-btn" 
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition" 
             onClick={toggleFullscreen}
             title={isFullscreen ? "Exit Fullscreen" : "Fullscreen View"}
           >
             {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
           </button>
 
-          {/* Dark / Light Dashboard Theme Toggle */}
+          {/* Theme Toggle */}
           <button 
-            className="navbar-tool-btn" 
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition" 
             onClick={toggleDashboardTheme}
             title={`Dashboard Theme: ${dashboardTheme === 'dark' ? 'Dark' : 'Light'}`}
           >
-            {dashboardTheme === 'dark' ? <Sun size={18} color="#f59e0b" /> : <Moon size={18} color="#475569" />}
+            {dashboardTheme === 'dark' ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} className="text-slate-600" />}
           </button>
 
-          {/* Calendar Quick View Launcher */}
+          {/* Calendar Launcher */}
           <button 
-            className="navbar-tool-btn" 
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition" 
             onClick={() => setShowNavCalendar(true)}
             title="Open HR Calendar & Schedule"
           >
             <Calendar size={18} />
           </button>
 
-          {/* Note: Notification bell removed per explicit user instruction */}
-
-          {/* Settings / Gear Icon */}
+          {/* Settings Icon */}
           <button 
-            className="navbar-tool-btn" 
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition" 
             onClick={handleSettingsClick}
             title="Admin Settings"
           >
@@ -169,49 +182,49 @@ const Navbar = ({ title, subtitle }) => {
         </div>
 
         {/* User Profile Badge */}
-        <div className="user-profile-badge">
+        <div className="flex items-center gap-2.5 pl-2 sm:pl-3 border-l border-slate-200 dark:border-slate-800">
           {user?.profilePhoto ? (
             <img 
               src={user.profilePhoto} 
               alt={user.fullName || 'User'} 
-              className="user-avatar-img"
-              style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }}
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover shrink-0 border border-slate-200 dark:border-slate-700"
             />
           ) : (
-            <div className="user-avatar">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-blue-700 to-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
               {(user?.fullName || 'User').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
             </div>
           )}
-          <div className="user-info">
-            <span className="user-name">{user?.fullName || 'User'}</span>
-            <span className="user-role">{user?.designation || (userRole === 'admin' ? 'System Administrator' : 'Employee')}</span>
+          <div className="hidden lg:flex flex-col text-left">
+            <span className="text-xs font-bold text-slate-900 dark:text-white truncate">{user?.fullName || 'User'}</span>
+            <span className="text-[11px] text-slate-400 truncate">{user?.designation || (userRole === 'admin' ? 'System Administrator' : 'Employee')}</span>
           </div>
         </div>
       </div>
 
-      {/* Interactive Quick Calendar Modal (Portaled directly to document.body for top z-index) */}
+      {/* Calendar Modal */}
       {showNavCalendar && createPortal(
         <div 
-          className="modal-overlay" 
+          className="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4" 
           onClick={() => setShowNavCalendar(false)}
-          style={{ zIndex: 999999, position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(15, 23, 42, 0.75)', backdropFilter: 'blur(5px)', padding: '1rem' }}
         >
           <div 
-            className="modal-content" 
+            className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col overflow-hidden border border-slate-200 dark:border-slate-800 animate-in fade-in zoom-in duration-200" 
             onClick={(e) => e.stopPropagation()} 
-            style={{ maxWidth: '520px', maxHeight: '88vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)', zIndex: 1000000 }}
           >
-            <div className="modal-header" style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)', color: '#ffffff', flexShrink: 0 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                <Calendar size={20} color="#93c5fd" />
-                <h3 style={{ color: '#ffffff', margin: 0 }}>HRMS Executive Calendar & Schedule</h3>
+            <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-blue-900 to-blue-600 text-white shrink-0">
+              <div className="flex items-center gap-2.5">
+                <Calendar size={20} className="text-blue-200" />
+                <h3 className="font-bold text-white text-base">HRMS Executive Calendar & Schedule</h3>
               </div>
-              <button className="toast-close" onClick={() => setShowNavCalendar(false)} style={{ color: '#ffffff', background: 'none', border: 'none', cursor: 'pointer' }}>
+              <button 
+                onClick={() => setShowNavCalendar(false)} 
+                className="text-white/80 hover:text-white transition p-1"
+              >
                 <X size={18} />
               </button>
             </div>
             
-            <div className="modal-body" style={{ padding: '1.25rem', overflowY: 'auto', flex: 1 }}>
+            <div className="p-6 overflow-y-auto flex-1 space-y-4">
               {(() => {
                 const now = new Date();
                 const currentYear = now.getFullYear();
@@ -240,29 +253,26 @@ const Navbar = ({ title, subtitle }) => {
                 const displayTodayBadge = `Today: ${currentShortMonth} ${currentDayNum}`;
 
                 const daysInMonth = new Date(currentYear, currentMonthIdx + 1, 0).getDate();
-                const firstDayOffset = new Date(currentYear, currentMonthIdx, 1).getDay(); // 0 = Sun
+                const firstDayOffset = new Date(currentYear, currentMonthIdx, 1).getDay();
 
-                const staffOnLeave = employees.filter((e) => e.status === 'On Leave');
+                const staffOnLeave = employees ? employees.filter((e) => e.status === 'On Leave') : [];
 
                 return (
                   <>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', padding: '0.75rem 1rem', background: '#f8fafc', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                      <span style={{ fontWeight: '800', color: 'var(--text-main)', fontSize: '1rem' }}>{displayMonthYear}</span>
-                      <span style={{ fontSize: '0.8rem', background: '#eff6ff', color: '#1d4ed8', fontWeight: '700', padding: '0.2rem 0.65rem', borderRadius: 'var(--radius-full)' }}>{displayTodayBadge}</span>
+                    <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700">
+                      <span className="font-extrabold text-slate-900 dark:text-white text-base">{displayMonthYear}</span>
+                      <span className="text-xs font-bold px-3 py-1 bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 rounded-full">{displayTodayBadge}</span>
                     </div>
 
-                    {/* Monthly Mini Grid */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.35rem', textAlign: 'center', fontSize: '0.78rem', marginBottom: '1.25rem' }}>
+                    <div className="grid grid-cols-7 gap-1.5 text-center text-xs">
                       {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-                        <div key={day} style={{ fontWeight: '800', color: 'var(--text-muted)', padding: '0.3rem 0' }}>{day}</div>
+                        <div key={day} className="font-extrabold text-slate-400 py-1">{day}</div>
                       ))}
                       
-                      {/* First Day Offset Slots */}
                       {[...Array(firstDayOffset)].map((_, i) => (
                         <div key={`offset-${i}`} />
                       ))}
 
-                      {/* Month Days */}
                       {[...Array(daysInMonth)].map((_, idx) => {
                         const dayNum = idx + 1;
                         const isToday = dayNum === currentDayNum;
@@ -270,56 +280,48 @@ const Navbar = ({ title, subtitle }) => {
                         return (
                           <div 
                             key={dayNum}
-                            style={{
-                              padding: '0.5rem 0',
-                              borderRadius: 'var(--radius-sm)',
-                              fontWeight: isToday ? '800' : '600',
-                              backgroundColor: isToday ? '#2563eb' : hasEvent ? '#eff6ff' : '#ffffff',
-                              color: isToday ? '#ffffff' : hasEvent ? '#1d4ed8' : 'var(--text-main)',
-                              border: isToday ? 'none' : '1px solid var(--border-color)',
-                              cursor: 'pointer',
-                              position: 'relative'
-                            }}
-                            onClick={() => addToast(`Events for ${currentShortMonth} ${dayNum}, ${currentYear}: ${isToday ? `${employees.length} Active Staff & ${staffOnLeave.length} On Leave` : 'Normal Operations Working Day'}`, 'info')}
+                            className={`py-2 rounded-xl text-xs font-semibold relative cursor-pointer transition ${
+                              isToday 
+                                ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30' 
+                                : hasEvent 
+                                  ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/40' 
+                                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100'
+                            }`}
+                            onClick={() => addToast(`Events for ${currentShortMonth} ${dayNum}, ${currentYear}: ${isToday ? `${employees ? employees.length : 0} Active Staff & ${staffOnLeave.length} On Leave` : 'Normal Operations Working Day'}`, 'info')}
                           >
                             {dayNum}
                             {hasEvent && !isToday && (
-                              <span style={{ position: 'absolute', bottom: '2px', left: '50%', transform: 'translateX(-50%)', width: '4px', height: '4px', backgroundColor: '#2563eb', borderRadius: '50%' }} />
+                              <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-blue-600 rounded-full" />
                             )}
                           </div>
                         );
                       })}
                     </div>
 
-                    {/* Schedule Highlights */}
-                    <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
-                      <h4 style={{ fontSize: '0.88rem', fontWeight: '800', marginBottom: '0.75rem', color: 'var(--text-main)' }}>Today's Scheduled Events ({currentShortMonth} {currentDayNum})</h4>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                    <div className="border-t border-slate-200 dark:border-slate-800 pt-4 space-y-2">
+                      <h4 className="text-xs font-extrabold text-slate-900 dark:text-white uppercase tracking-wider">
+                        Today's Scheduled Events ({currentShortMonth} {currentDayNum})
+                      </h4>
+                      <div className="space-y-2 text-xs">
                         {staffOnLeave.length > 0 ? (
                           staffOnLeave.map((emp) => (
-                            <div key={emp.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: '#fffbeb', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid #f59e0b' }}>
-                              <span style={{ fontSize: '0.84rem', fontWeight: '700', color: '#92400e' }}>
-                                📅 {emp.fullName} ({emp.department}) &bull; Approved Leave
-                              </span>
-                              <span style={{ fontSize: '0.75rem', color: '#b45309', fontWeight: '600' }}>Approved</span>
+                            <div key={emp.id} className="flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-950/30 rounded-xl border-l-4 border-amber-500 text-amber-900 dark:text-amber-200">
+                              <span className="font-bold">📅 {emp.fullName} ({emp.department}) &bull; Approved Leave</span>
+                              <span className="font-semibold text-amber-700 dark:text-amber-400">Approved</span>
                             </div>
                           ))
                         ) : null}
 
-                        {departments.slice(0, 2).map((dept) => (
-                          <div key={dept.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: '#eff6ff', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid #2563eb' }}>
-                            <span style={{ fontSize: '0.84rem', fontWeight: '700', color: '#1e40af' }}>
-                              👥 {dept.name} Operations & Workforce Review
-                            </span>
-                            <span style={{ fontSize: '0.75rem', color: '#1d4ed8', fontWeight: '600' }}>10:00 AM</span>
+                        {departments && departments.slice(0, 2).map((dept) => (
+                          <div key={dept.id} className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-950/30 rounded-xl border-l-4 border-blue-500 text-blue-900 dark:text-blue-200">
+                            <span className="font-bold">👥 {dept.name} Operations & Workforce Review</span>
+                            <span className="font-semibold text-blue-700 dark:text-blue-400">10:00 AM</span>
                           </div>
                         ))}
 
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.65rem 0.85rem', background: '#ecfdf5', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid #10b981' }}>
-                          <span style={{ fontSize: '0.84rem', fontWeight: '700', color: '#047857' }}>
-                            💼 System Workforce Attendance & Roster Audit ({employees.length} Active Staff)
-                          </span>
-                          <span style={{ fontSize: '0.75rem', color: '#059669', fontWeight: '600' }}>Active</span>
+                        <div className="flex items-center justify-between p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border-l-4 border-emerald-500 text-emerald-900 dark:text-emerald-200">
+                          <span className="font-bold">💼 System Workforce Attendance & Roster Audit ({employees ? employees.length : 0} Staff)</span>
+                          <span className="font-semibold text-emerald-700 dark:text-emerald-400">Active</span>
                         </div>
                       </div>
                     </div>
@@ -328,8 +330,11 @@ const Navbar = ({ title, subtitle }) => {
               })()}
             </div>
 
-            <div className="modal-footer" style={{ flexShrink: 0 }}>
-              <button className="btn btn-secondary" onClick={() => setShowNavCalendar(false)}>
+            <div className="flex justify-end p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 shrink-0">
+              <button 
+                className="px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-100 transition shadow-xs" 
+                onClick={() => setShowNavCalendar(false)}
+              >
                 Close Calendar
               </button>
             </div>
