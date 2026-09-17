@@ -1214,6 +1214,7 @@ button, input, select, textarea {
   height: 140px;
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);
   position: relative;
+  z-index: 1;
 }
 
 .profile-header-content {
@@ -1224,6 +1225,8 @@ button, input, select, textarea {
   justify-content: space-between;
   gap: 1rem;
   margin-top: -50px;
+  position: relative;
+  z-index: 2;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -1232,6 +1235,8 @@ button, input, select, textarea {
   align-items: flex-end;
   gap: 1.25rem;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 3;
 }
 
 .profile-avatar {
@@ -1242,6 +1247,8 @@ button, input, select, textarea {
   object-fit: cover;
   box-shadow: var(--shadow-md);
   background-color: #ffffff;
+  position: relative;
+  z-index: 4;
 }
 
 .profile-title-text h3 {
