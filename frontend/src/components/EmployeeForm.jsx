@@ -13,7 +13,7 @@ const EmployeeForm = ({ initialValues, isEdit = false, onSubmitHandler }) => {
     fullName: initialValues?.fullName || '',
     email: initialValues?.email || '',
     phone: initialValues?.phone || '',
-    dob: initialValues?.dob || '',
+    dob: initialValues?.dob ? String(initialValues.dob).split('T')[0] : (initialValues?.date_of_birth ? String(initialValues.date_of_birth).split('T')[0] : ''),
     gender: initialValues?.gender || 'Male',
     designation: initialValues?.designation || '',
     department: initialValues?.department || (departments[0]?.name || 'Human Resources'),

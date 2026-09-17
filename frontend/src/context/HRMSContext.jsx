@@ -59,6 +59,10 @@ export const getSalaryBreakdown = (salaryInput) => {
  * Normalizes PostgreSQL Employee record to be compatible with frontend UI fields
  */
 const normalizeEmployee = (emp) => {
+  const formattedDob = emp.date_of_birth 
+    ? String(emp.date_of_birth).split('T')[0] 
+    : (emp.dob || emp.dateOfBirth || '');
+
   return {
     ...emp,
     id: emp.id,
@@ -66,10 +70,15 @@ const normalizeEmployee = (emp) => {
     fullName: emp.full_name || emp.fullName || 'Employee',
     email: emp.email,
     phone: emp.phone || '+1 555-0199',
+    dob: formattedDob,
+    date_of_birth: formattedDob,
+    dateOfBirth: formattedDob,
+    gender: emp.gender,
     designation: emp.designation,
     department: emp.department_name || emp.department || 'General',
     department_id: emp.department_id,
     joiningDate: emp.joining_date ? String(emp.joining_date).split('T')[0] : '2023-01-01',
+    joining_date: emp.joining_date ? String(emp.joining_date).split('T')[0] : '2023-01-01',
     employmentType: emp.employment_type || emp.employmentType || 'Full-time',
     salary: emp.salary ? String(emp.salary) : '75000',
     status: emp.status || 'Active',

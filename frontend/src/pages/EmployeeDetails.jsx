@@ -137,7 +137,11 @@ const EmployeeDetails = () => {
                 <Calendar size={14} /> Date of Birth
               </span>
             </div>
-            <div className="info-value">{employee.dob || 'N/A'}</div>
+            <div className="info-value">
+              {employee.dob && employee.dob !== 'N/A' 
+                ? String(employee.dob).split('T')[0] 
+                : (employee.date_of_birth ? String(employee.date_of_birth).split('T')[0] : 'N/A')}
+            </div>
           </div>
 
           <div className="info-item">
