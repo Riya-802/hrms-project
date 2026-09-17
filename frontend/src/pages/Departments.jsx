@@ -94,7 +94,7 @@ const Departments = () => {
       <div className="card" style={{ marginBottom: '1.75rem' }}>
         <div className="card-body" style={{ padding: '1.25rem 1.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-            <div className="search-input-wrapper" style={{ minWidth: '320px', flex: 1 }}>
+            <div className="search-input-wrapper" style={{ flex: 1, minWidth: '200px' }}>
               <Search className="navbar-search-icon" />
               <input 
                 type="text" 

@@ -2241,3 +2241,162 @@ button, input, select, textarea {
   margin-left: 0.5rem;
 }
 
+/* ==========================================
+   RESPONSIVE DESIGN SYSTEM & MEDIA QUERIES
+   ========================================== */
+
+.table-container,
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 1. Large Tablet / Mobile Drawer Sidebar (max-width: 992px) */
+@media (max-width: 992px) {
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100vh !important;
+    z-index: 1000 !important;
+    transform: translateX(-100%) !important;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  .sidebar-close-btn {
+    display: flex !important;
+  }
+
+  .mobile-menu-toggle {
+    display: flex !important;
+  }
+
+  .main-wrapper {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .navbar {
+    padding: 0 1rem !important;
+  }
+
+  .navbar-search {
+    width: 180px !important;
+  }
+
+  .page-content {
+    padding: 1.25rem 1rem !important;
+  }
+}
+
+/* 2. Standard Mobile Devices (max-width: 768px) */
+@media (max-width: 768px) {
+  .navbar {
+    height: 60px !important;
+    padding: 0 0.75rem !important;
+  }
+
+  .navbar-title-group h1 {
+    font-size: 1rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 130px !important;
+  }
+
+  .navbar-subtitle-text {
+    display: none !important;
+  }
+
+  .navbar-actions {
+    gap: 0.4rem !important;
+  }
+
+  .navbar-search {
+    display: none !important; /* Hide search bar from header on small screens */
+  }
+
+  .user-info {
+    display: none !important; /* Hide text name/role in header, display avatar icon only */
+  }
+
+  .user-profile-badge {
+    padding-left: 0.4rem !important;
+    border-left: none !important;
+  }
+
+  .navbar-toolbar {
+    gap: 0.25rem !important;
+  }
+
+  .navbar-tool-btn {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .page-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  .dashboard-hero {
+    padding: 1.25rem 1rem !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+    gap: 0.75rem !important;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .profile-header-content {
+    padding: 0 1rem 1rem 1rem !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  .profile-avatar {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .search-input-wrapper {
+    min-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
+/* 3. Small Screen Smartphones (max-width: 480px) */
+@media (max-width: 480px) {
+  .navbar-title-group h1 {
+    font-size: 0.9rem !important;
+    max-width: 100px !important;
+  }
+
+  .card {
+    border-radius: var(--radius-md) !important;
+  }
+
+  .card-body {
+    padding: 1rem !important;
+  }
+
+  .btn {
+    padding: 0.5rem 0.85rem !important;
+    font-size: 0.82rem !important;
+  }
+}
+
+
