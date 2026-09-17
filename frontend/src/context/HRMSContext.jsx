@@ -9,7 +9,12 @@ import {
   fetchDepartments,
   createDepartmentApi,
   updateDepartmentApi,
-  deleteDepartmentApi
+  deleteDepartmentApi,
+  fetchTasksApi,
+  createTaskApi,
+  updateTaskApi,
+  deleteTaskApi,
+  fetchTaskReportsApi
 } from '../api/hrmsApi';
 import { translations, getFormattedCurrentDate } from '../utils/translations';
 
@@ -85,6 +90,31 @@ const normalizeDepartment = (dept) => {
     description: dept.description || 'Department operations and management.',
     status: dept.status || 'Active',
     employeeCount: dept.employee_count !== undefined ? dept.employee_count : 0
+  };
+};
+
+/**
+ * Normalizes PostgreSQL Task record to be compatible with frontend UI fields
+ */
+const normalizeTask = (t) => {
+  return {
+    ...t,
+    id: t.id,
+    taskId: t.task_id || `TSK${String(t.id).padStart(3, '0')}`,
+    title: t.title,
+    description: t.description || '',
+    assignedTo: t.assigned_to,
+    assignedToName: t.assigned_to_name || 'Unassigned Staff',
+    assignedToEmpId: t.assigned_to_emp_id || '',
+    assignedToDesignation: t.assigned_to_designation || '',
+    assignedToPhoto: t.assigned_to_photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256',
+    createdBy: t.created_by,
+    createdByName: t.created_by_name || 'Admin Director',
+    priority: t.priority || 'Medium',
+    status: t.status || 'Pending',
+    dueDate: t.due_date ? String(t.due_date).split('T')[0] : '2026-09-30',
+    createdAt: t.created_at,
+    updatedAt: t.updated_at
   };
 };
 
@@ -209,9 +239,10 @@ export const HRMSProvider = ({ children }) => {
   const refreshData = async () => {
     setIsLoading(true);
     try {
-      const [deptRes, empRes] = await Promise.all([
+      const [deptRes, empRes, taskRes] = await Promise.all([
         fetchDepartments(),
-        fetchEmployees({ limit: 100 })
+        fetchEmployees({ limit: 100 }),
+        fetchTasksApi()
       ]);
 
       if (deptRes.success && deptRes.data) {
@@ -238,6 +269,10 @@ export const HRMSProvider = ({ children }) => {
             }
           } catch (e) {}
         }
+      }
+
+      if (taskRes.success && taskRes.data) {
+        setTasks(taskRes.data.map(normalizeTask));
       }
 
       setIsBackendConnected(true);
@@ -318,18 +353,59 @@ export const HRMSProvider = ({ children }) => {
     addToast(`Leave request rejected.`, 'info');
   };
 
-  // Task Actions
-  const toggleTaskStatus = (id) => {
-    setTasks((prev) =>
-      prev.map((t) => {
-        if (t.id === id) {
-          const nextStatus = t.status === 'Completed' ? 'Pending' : 'Completed';
-          return { ...t, status: nextStatus };
-        }
-        return t;
-      })
-    );
-    addToast(`Task status updated.`, 'info');
+  // Task Actions connected to PostgreSQL Backend
+  const addTask = async (taskData) => {
+    try {
+      const res = await createTaskApi(taskData);
+      if (res.success && res.data) {
+        const normalized = normalizeTask(res.data);
+        setTasks((prev) => [normalized, ...prev]);
+        addToast(`Task "${normalized.title}" created successfully!`, 'success');
+        refreshData();
+        return normalized;
+      }
+    } catch (error) {
+      console.warn('API Add Task error:', error.message);
+      addToast(error.message || 'Error creating task record.', 'danger');
+      return null;
+    }
+  };
+
+  const updateTask = async (id, taskData) => {
+    try {
+      const res = await updateTaskApi(id, taskData);
+      if (res.success && res.data) {
+        const normalized = normalizeTask(res.data);
+        setTasks((prev) => prev.map((t) => (t.id === id || t.taskId === id ? normalized : t)));
+        addToast(`Task "${normalized.title}" updated successfully!`, 'success');
+        refreshData();
+        return normalized;
+      }
+    } catch (error) {
+      console.warn('API Update Task error:', error.message);
+      addToast(error.message || 'Error updating task record.', 'danger');
+    }
+  };
+
+  const deleteTask = async (id) => {
+    try {
+      const res = await deleteTaskApi(id);
+      if (res.success) {
+        setTasks((prev) => prev.filter((t) => t.id !== id && t.taskId !== id));
+        addToast(`Task deleted from PostgreSQL.`, 'info');
+        refreshData();
+      }
+    } catch (error) {
+      console.warn('API Delete Task error:', error.message);
+      addToast(error.message || 'Error deleting task record.', 'danger');
+    }
+  };
+
+  const toggleTaskStatus = async (id) => {
+    const target = tasks.find((t) => t.id === id || t.taskId === id);
+    if (!target) return;
+    const nextStatus = target.status === 'Completed' ? 'Pending' : (target.status === 'Pending' ? 'In Progress' : 'Completed');
+    await updateTask(id, { status: nextStatus });
   };
 
   // Dynamic Statistics
@@ -630,6 +706,9 @@ export const HRMSProvider = ({ children }) => {
         addAnnouncement,
         approveLeave,
         rejectLeave,
+        addTask,
+        updateTask,
+        deleteTask,
         toggleTaskStatus,
         addEmployee,
         updateEmployee,

@@ -21,6 +21,11 @@ import AddDepartment from './pages/AddDepartment';
 import DepartmentDetails from './pages/DepartmentDetails';
 import EditDepartment from './pages/EditDepartment';
 
+// Task Management Pages
+import TaskList from './pages/tasks/TaskList';
+import CreateTask from './pages/tasks/CreateTask';
+import TaskReports from './pages/tasks/TaskReports';
+
 // Employee Pages
 import EmployeeDashboard from './pages/EmployeeDashboard';
 import EmployeeProfile from './pages/employee/EmployeeProfile';
@@ -78,6 +83,15 @@ function App() {
             <Route path="departments/:id" element={<DepartmentDetails />} />
             <Route path="departments/:id/edit" element={<EditDepartment />} />
 
+            {/* Admin Task Management Routes */}
+            <Route path="tasks" element={<TaskList filterMode="all" />} />
+            <Route path="tasks/create" element={<CreateTask />} />
+            <Route path="tasks/assigned" element={<TaskList filterMode="assigned" />} />
+            <Route path="tasks/pending" element={<TaskList filterMode="pending" />} />
+            <Route path="tasks/in-progress" element={<TaskList filterMode="in-progress" />} />
+            <Route path="tasks/completed" element={<TaskList filterMode="completed" />} />
+            <Route path="tasks/reports" element={<TaskReports />} />
+
             {/* Fallback Admin Sub-pages */}
             <Route path="*" element={<Dashboard />} />
           </Route>
@@ -102,6 +116,15 @@ function App() {
 
             <Route path="leaves" element={<EmployeeLeaves />} />
             <Route path="leaves/*" element={<EmployeeLeaves />} />
+
+            {/* Employee Task Management Routes */}
+            <Route path="tasks" element={<TaskList filterMode="all" />} />
+            <Route path="tasks/create" element={<CreateTask />} />
+            <Route path="tasks/assigned" element={<TaskList filterMode="assigned" />} />
+            <Route path="tasks/pending" element={<TaskList filterMode="pending" />} />
+            <Route path="tasks/in-progress" element={<TaskList filterMode="in-progress" />} />
+            <Route path="tasks/completed" element={<TaskList filterMode="completed" />} />
+            <Route path="tasks/reports" element={<TaskReports />} />
 
             <Route path="work" element={<EmployeeWork />} />
             <Route path="work/*" element={<EmployeeWork />} />

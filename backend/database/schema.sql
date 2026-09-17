@@ -1,8 +1,9 @@
 -- HRMS PostgreSQL Schema Definition
 
 -- Drop tables if they exist (clean setup order)
-DROP TABLE IF EXISTS employees;
-DROP TABLE IF EXISTS departments;
+DROP TABLE IF EXISTS tasks CASCADE;
+DROP TABLE IF EXISTS employees CASCADE;
+DROP TABLE IF EXISTS departments CASCADE;
 
 -- 1. DEPARTMENTS TABLE
 CREATE TABLE departments (
@@ -43,3 +44,23 @@ CREATE INDEX idx_employees_employee_id ON employees(employee_id);
 CREATE INDEX idx_employees_role ON employees(role);
 CREATE INDEX idx_employees_department_id ON employees(department_id);
 CREATE INDEX idx_employees_status ON employees(status);
+
+-- 3. TASKS TABLE
+DROP TABLE IF EXISTS tasks;
+CREATE TABLE tasks (
+    id SERIAL PRIMARY KEY,
+    task_id VARCHAR(30) UNIQUE,
+    title VARCHAR(200) NOT NULL,
+    description TEXT,
+    assigned_to INT REFERENCES employees(id) ON DELETE CASCADE,
+    created_by INT REFERENCES employees(id) ON DELETE SET NULL,
+    priority VARCHAR(20) DEFAULT 'Medium' CHECK (priority IN ('Low', 'Medium', 'High', 'Urgent')),
+    status VARCHAR(20) DEFAULT 'Pending' CHECK (status IN ('Pending', 'In Progress', 'Completed')),
+    due_date DATE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_tasks_assigned_to ON tasks(assigned_to);
+CREATE INDEX idx_tasks_status ON tasks(status);
+CREATE INDEX idx_tasks_priority ON tasks(priority);

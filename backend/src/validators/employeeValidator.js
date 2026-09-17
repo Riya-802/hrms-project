@@ -22,9 +22,11 @@ const createEmployeeValidation = [
     .withMessage('Please provide a valid email address.')
     .normalizeEmail(),
 
-  body('phone')
-    .optional()
-    .trim(),
+   body('phone')
+  .optional()
+  .trim()
+  .matches(/^[6-9]\d{9}$/)
+  .withMessage('Phone number must be a valid 10-digit phone number.'),
 
   body('date_of_birth')
     .optional({ checkFalsy: true })

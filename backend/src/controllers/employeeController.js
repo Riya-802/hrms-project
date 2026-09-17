@@ -267,14 +267,21 @@ const updateEmployee = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    // Check if employee exists
-    const existingEmp = await db.query(`SELECT * FROM employees WHERE id = $1;`, [id]);
+    let isNumericId = !isNaN(parseInt(id, 10)) && String(parseInt(id, 10)) === String(id);
+    let checkQuery = isNumericId
+      ? `SELECT * FROM employees WHERE id = $1;`
+      : `SELECT * FROM employees WHERE employee_id = $1;`;
+
+    const existingEmp = await db.query(checkQuery, [id]);
     if (existingEmp.rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: 'Employee not found'
       });
     }
+
+    const targetEmp = existingEmp.rows[0];
+    const realDbId = targetEmp.id;
 
     const {
       full_name,
@@ -289,7 +296,8 @@ const updateEmployee = async (req, res, next) => {
       salary,
       status,
       address,
-      profile_photo
+      profile_photo,
+      password
     } = req.body;
 
     // If department_id provided, check existence
@@ -303,34 +311,41 @@ const updateEmployee = async (req, res, next) => {
       }
     }
 
+    // Optional password update
+    let passwordHashUpdate = targetEmp.password_hash;
+    if (password && password.trim()) {
+      passwordHashUpdate = await bcrypt.hash(password.trim(), 10);
+    }
+
     const updateQuery = `
       UPDATE employees
       SET
         full_name = COALESCE($1, full_name),
         email = COALESCE($2, email),
-        phone = COALESCE($3, phone),
-        date_of_birth = COALESCE($4, date_of_birth),
-        gender = COALESCE($5, gender),
+        phone = CASE WHEN $3::text IS NOT NULL THEN $3 ELSE phone END,
+        date_of_birth = CASE WHEN $4::date IS NOT NULL THEN $4 ELSE date_of_birth END,
+        gender = CASE WHEN $5::text IS NOT NULL THEN $5 ELSE gender END,
         designation = COALESCE($6, designation),
         department_id = COALESCE($7, department_id),
-        joining_date = COALESCE($8, joining_date),
+        joining_date = CASE WHEN $8::date IS NOT NULL THEN $8 ELSE joining_date END,
         employment_type = COALESCE($9, employment_type),
         salary = COALESCE($10, salary),
         status = COALESCE($11, status),
-        address = COALESCE($12, address),
-        profile_photo = COALESCE($13, profile_photo),
+        address = CASE WHEN $12::text IS NOT NULL THEN $12 ELSE address END,
+        profile_photo = CASE WHEN $13::text IS NOT NULL THEN $13 ELSE profile_photo END,
+        password_hash = $14,
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = $14
+      WHERE id = $15
       RETURNING *;
     `;
 
     const values = [
-      full_name ? full_name.trim() : null,
-      email ? email.trim().toLowerCase() : null,
+      full_name && full_name.trim() ? full_name.trim() : null,
+      email && email.trim() ? email.trim().toLowerCase() : null,
       phone !== undefined ? (phone ? phone.trim() : null) : null,
       date_of_birth || null,
       gender || null,
-      designation ? designation.trim() : null,
+      designation && designation.trim() ? designation.trim() : null,
       department_id || null,
       joining_date || null,
       employment_type || null,
@@ -338,23 +353,24 @@ const updateEmployee = async (req, res, next) => {
       status || null,
       address !== undefined ? (address ? address.trim() : null) : null,
       profile_photo !== undefined ? (profile_photo ? profile_photo.trim() : null) : null,
-      id
+      passwordHashUpdate,
+      realDbId
     ];
 
-    const { rows } = await db.query(updateQuery, values);
+    await db.query(updateQuery, values);
 
     // Fetch joined department name
     const joinedQuery = `
-      SELECT e.*, d.department_name 
+      SELECT e.id, e.employee_id, e.full_name, e.email, e.role, e.phone, e.date_of_birth, e.gender, e.designation, e.department_id, d.department_name, e.joining_date, e.employment_type, e.salary, e.status, e.address, e.profile_photo, e.created_at, e.updated_at 
       FROM employees e 
       LEFT JOIN departments d ON e.department_id = d.id 
       WHERE e.id = $1;
     `;
-    const { rows: joinedRows } = await db.query(joinedQuery, [id]);
+    const { rows: joinedRows } = await db.query(joinedQuery, [realDbId]);
 
     res.status(200).json({
       success: true,
-      message: 'Employee updated successfully',
+      message: 'Employee updated successfully in PostgreSQL database',
       data: joinedRows[0]
     });
   } catch (error) {
@@ -370,7 +386,11 @@ const deleteEmployee = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const checkQuery = `SELECT * FROM employees WHERE id = $1;`;
+    let isNumericId = !isNaN(parseInt(id, 10)) && String(parseInt(id, 10)) === String(id);
+    let checkQuery = isNumericId
+      ? `SELECT * FROM employees WHERE id = $1;`
+      : `SELECT * FROM employees WHERE employee_id = $1;`;
+
     const { rows } = await db.query(checkQuery, [id]);
 
     if (rows.length === 0) {
@@ -380,11 +400,12 @@ const deleteEmployee = async (req, res, next) => {
       });
     }
 
-    await db.query(`DELETE FROM employees WHERE id = $1;`, [id]);
+    const realDbId = rows[0].id;
+    await db.query(`DELETE FROM employees WHERE id = $1;`, [realDbId]);
 
     res.status(200).json({
       success: true,
-      message: 'Employee deleted successfully'
+      message: 'Employee deleted successfully from PostgreSQL database'
     });
   } catch (error) {
     next(error);

@@ -68,7 +68,24 @@ async function initDb() {
       `, emp);
     }
 
-    console.log('✅ 1 Admin and 10 Employee accounts created with hashed passwords!');
+    // 4. Insert Initial Tasks assigned to DB Employees
+    const tasksData = [
+      ['TSK001', 'Complete Q3 Code Review & PR Verification', 'Review pull requests and verify code quality for HRMS release', 2, 1, 'High', 'Pending', '2026-09-20'],
+      ['TSK002', 'Update HRMS API Documentation & Specs', 'Write OpenAPI 3.0 documentation for REST endpoints', 2, 1, 'Medium', 'In Progress', '2026-09-22'],
+      ['TSK003', 'Submit Monthly Financial Reconciliation', 'Audit expenses and prepare Q3 balance sheets', 4, 1, 'High', 'Completed', '2026-09-15'],
+      ['TSK004', 'Prepare Q4 Marketing Campaign Strategy', 'Draft brand messaging and channel strategy', 5, 1, 'Medium', 'In Progress', '2026-09-25'],
+      ['TSK005', 'Conduct Annual Performance Appraisal Reviews', 'Review HR appraisal forms for all staff members', 3, 1, 'Urgent', 'Pending', '2026-09-18'],
+      ['TSK006', 'Database Optimization & Index Tuning', 'Optimize PostgreSQL queries and index structures', 7, 1, 'High', 'Pending', '2026-09-28']
+    ];
+
+    for (const t of tasksData) {
+      await pool.query(`
+        INSERT INTO tasks (task_id, title, description, assigned_to, created_by, priority, status, due_date)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+      `, t);
+    }
+
+    console.log('✅ 1 Admin, 10 Employees, and 6 Tasks created in PostgreSQL!');
     console.log('🎉 Database initialization complete!');
   } catch (err) {
     console.error('❌ Error initializing database:', err.message);

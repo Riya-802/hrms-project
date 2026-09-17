@@ -23,7 +23,8 @@ import {
   Award,
   BarChart3,
   Megaphone,
-  User
+  User,
+  CheckSquare
 } from 'lucide-react';
 import { useHRMS } from '../context/HRMSContext';
 
@@ -51,6 +52,7 @@ const Sidebar = ({ portalType }) => {
   const [openSubmenus, setOpenSubmenus] = useState({
     employees: true,
     departments: true,
+    tasks: true,
     profile: true,
     attendance: false,
     leaves: false,
@@ -106,6 +108,20 @@ const Sidebar = ({ portalType }) => {
       children: [
         { title: 'All Departments', path: '/admin/departments' },
         { title: 'Add Department', path: '/admin/departments/add' }
+      ]
+    },
+    {
+      key: 'tasks',
+      title: 'Task Management',
+      icon: CheckSquare,
+      children: [
+        { title: 'All Tasks', path: '/admin/tasks' },
+        { title: 'Create Task', path: '/admin/tasks/create' },
+        { title: 'Assigned Tasks', path: '/admin/tasks/assigned' },
+        { title: 'Pending Tasks', path: '/admin/tasks/pending' },
+        { title: 'In Progress', path: '/admin/tasks/in-progress' },
+        { title: 'Completed', path: '/admin/tasks/completed' },
+        { title: 'Task Reports', path: '/admin/tasks/reports' }
       ]
     },
     {
@@ -200,13 +216,17 @@ const Sidebar = ({ portalType }) => {
       ]
     },
     {
-      key: 'work',
-      title: 'My Work',
-      icon: Briefcase,
+      key: 'tasks',
+      title: 'Task Management',
+      icon: CheckSquare,
       children: [
-        { title: 'Assigned Tasks', path: '/employee/work' },
-        { title: 'Pending Tasks', path: '/employee/work/pending' },
-        { title: 'Completed Tasks', path: '/employee/work/completed' }
+        { title: 'All Tasks', path: '/employee/tasks' },
+        { title: 'Create Task', path: '/employee/tasks/create' },
+        { title: 'Assigned Tasks', path: '/employee/tasks/assigned' },
+        { title: 'Pending Tasks', path: '/employee/tasks/pending' },
+        { title: 'In Progress', path: '/employee/tasks/in-progress' },
+        { title: 'Completed', path: '/employee/tasks/completed' },
+        { title: 'Task Reports', path: '/employee/tasks/reports' }
       ]
     },
     {

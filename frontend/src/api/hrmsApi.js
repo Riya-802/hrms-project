@@ -145,3 +145,47 @@ export const deleteEmployeeApi = async (id) => {
     method: 'DELETE',
   });
 };
+
+// ==========================================
+// 5. TASK API ENDPOINTS
+// ==========================================
+
+export const fetchTasksApi = async (params = {}) => {
+  const query = new URLSearchParams();
+  if (params.status) query.append('status', params.status);
+  if (params.priority) query.append('priority', params.priority);
+  if (params.assigned_to) query.append('assigned_to', params.assigned_to);
+  if (params.search) query.append('search', params.search);
+
+  const queryString = query.toString() ? `?${query.toString()}` : '';
+  return request(`/tasks${queryString}`);
+};
+
+export const fetchTaskByIdApi = async (id) => {
+  return request(`/tasks/${id}`);
+};
+
+export const createTaskApi = async (taskData) => {
+  return request('/tasks', {
+    method: 'POST',
+    body: JSON.stringify(taskData),
+  });
+};
+
+export const updateTaskApi = async (id, taskData) => {
+  return request(`/tasks/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(taskData),
+  });
+};
+
+export const deleteTaskApi = async (id) => {
+  return request(`/tasks/${id}`, {
+    method: 'DELETE',
+  });
+};
+
+export const fetchTaskReportsApi = async () => {
+  return request('/tasks/reports');
+};
+
