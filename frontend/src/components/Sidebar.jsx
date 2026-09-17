@@ -150,7 +150,8 @@ const Sidebar = ({ portalType }) => {
       icon: DollarSign,
       children: [
         { title: 'Salary Management', path: '/admin/payroll' },
-        { title: 'Payslips', path: '/admin/payroll/payslips' }
+        { title: 'Payslips', path: '/admin/payroll/payslips' },
+        { title: 'Wallet', path: '/admin/payroll/wallet' }
       ]
     },
     {
@@ -235,7 +236,8 @@ const Sidebar = ({ portalType }) => {
       icon: DollarSign,
       children: [
         { title: 'Salary Overview', path: '/employee/payroll' },
-        { title: 'Payslips', path: '/employee/payroll/payslips' }
+        { title: 'Payslips', path: '/employee/payroll/payslips' },
+        { title: 'Wallet', path: '/employee/payroll/wallet' }
       ]
     },
     {

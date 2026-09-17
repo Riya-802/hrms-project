@@ -26,6 +26,9 @@ import TaskList from './pages/tasks/TaskList';
 import CreateTask from './pages/tasks/CreateTask';
 import TaskReports from './pages/tasks/TaskReports';
 
+// Payroll Pages
+import PayrollWallet from './pages/payroll/PayrollWallet';
+
 // Employee Pages
 import EmployeeDashboard from './pages/EmployeeDashboard';
 import EmployeeProfile from './pages/employee/EmployeeProfile';
@@ -92,6 +95,9 @@ function App() {
             <Route path="tasks/completed" element={<TaskList filterMode="completed" />} />
             <Route path="tasks/reports" element={<TaskReports />} />
 
+            {/* Admin Payroll Wallet Route */}
+            <Route path="payroll/wallet" element={<PayrollWallet />} />
+
             {/* Fallback Admin Sub-pages */}
             <Route path="*" element={<Dashboard />} />
           </Route>
@@ -129,6 +135,7 @@ function App() {
             <Route path="work" element={<EmployeeWork />} />
             <Route path="work/*" element={<EmployeeWork />} />
 
+            <Route path="payroll/wallet" element={<PayrollWallet />} />
             <Route path="payroll" element={<EmployeePayroll />} />
             <Route path="payroll/*" element={<EmployeePayroll />} />
 
