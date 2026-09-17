@@ -29,12 +29,12 @@ const DepartmentTable = ({ departments = [] }) => {
         <table className="data-table">
           <thead>
             <tr>
-              <th>Dept ID</th>
-              <th>Department Name</th>
+              <th style={{ whiteSpace: 'nowrap' }}>Dept ID</th>
+              <th style={{ whiteSpace: 'nowrap' }}>Department Name</th>
               <th>Description</th>
-              <th>No. of Employees</th>
-              <th>Status</th>
-              <th style={{ textAlign: 'right' }}>Actions</th>
+              <th style={{ whiteSpace: 'nowrap', textAlign: 'center' }}>No. of Employees</th>
+              <th style={{ whiteSpace: 'nowrap', textAlign: 'center' }}>Status</th>
+              <th style={{ whiteSpace: 'nowrap', textAlign: 'right' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -43,19 +43,21 @@ const DepartmentTable = ({ departments = [] }) => {
                 const count = employees.filter((e) => e.department === dept.name).length;
                 return (
                   <tr key={dept.id}>
-                    <td style={{ fontWeight: '600', color: 'var(--primary)' }}>{dept.id}</td>
-                    <td style={{ fontWeight: '600' }}>{dept.name}</td>
-                    <td style={{ maxWidth: '320px', color: 'var(--text-muted)' }}>{dept.description}</td>
-                    <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: '600' }}>
+                    <td style={{ fontWeight: '600', color: 'var(--primary)', whiteSpace: 'nowrap' }}>{dept.id}</td>
+                    <td style={{ fontWeight: '600', whiteSpace: 'nowrap' }}>{dept.name}</td>
+                    <td style={{ maxWidth: '380px', whiteSpace: 'normal', wordBreak: 'break-word', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                      {dept.description}
+                    </td>
+                    <td style={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontWeight: '600' }}>
                         <Users size={16} color="var(--accent)" />
                         <span>{count}</span>
                       </div>
                     </td>
-                    <td>
+                    <td style={{ whiteSpace: 'nowrap', textAlign: 'center' }}>
                       <StatusBadge status={dept.status} />
                     </td>
-                    <td>
+                    <td style={{ whiteSpace: 'nowrap' }}>
                       <div className="action-buttons" style={{ justifyContent: 'flex-end' }}>
                         <button 
                           className="btn-icon view" 
